@@ -28,8 +28,8 @@ app.use('/users', users);
 /*
  * START Set Action check authen for request
  */
-//var PersonAccessService = require("./appcommon/services/AccessService");
-//app.all("/demo/*", PersonAccessService.checkAccessToken);
+var PersonAccessService = require("./appcommon/services/AccessService");
+app.all("/demo/Require*", PersonAccessService.checkAccessToken);
 /*
  * END Set Action check authen for request
  */
