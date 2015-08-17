@@ -14,7 +14,7 @@ var UserLoginDto = require("../modelsDto/UserLoginDto");
 var Constant = require("../helpers/Contant");
 var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
-var serviceUtils = require("../utils/ServiceUtils");
+var serviceUtil = require("../utils/ServiceUtil");
 
 var ID_FIELD_NAME = "id";
 
@@ -130,7 +130,7 @@ var loginByEmail = function(req, res){
                 res.send(responseObj);
             }else{
                 //generate accesstoken
-                var accessToken = serviceUtils.generateAccessToken();
+                var accessToken = serviceUtil.generateAccessToken();
                 console.log("accesstoken : " +  accessToken);
 
                 var userLoginDto = new UserLoginDto();
