@@ -37,11 +37,18 @@ app.all("/demo/Require*", PersonAccessService.checkAccessToken);
 /*
  * START set config mapping url
  */
+//person controller for demo
 var personCtrl = require("./appcommon/controllers/PersonCtrl");
 app.use('/demo/person', personCtrl);
 
+//upload file controller for demo
 var uploadFileCtrl = require("./appcommon/controllers/UploadFileCtrl");
 app.use('/demo/upload', uploadFileCtrl);
+
+//user controller for api
+var userCtrl = require("./appcommon/controllers/UserCtrl");
+app.use('/api/user', userCtrl);
+
 /*
  * END set config mapping url
  */

@@ -7,6 +7,7 @@ var personDao = require("../daos/PersonDao");
 var Person = require("../models/Person");
 
 var getAllPerson = function(req, res){
+    personDao.test();
     personDao.findAllActive().then(function(data){
         console.log("success");
         res.send(data);

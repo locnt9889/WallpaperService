@@ -10,4 +10,4 @@ function ResponseServerDto(){
     this.statusErrorCode = 0;
 };
 
-exports.ResponseServerDto = ResponseServerDto;
+module.exports = ResponseServerDto;

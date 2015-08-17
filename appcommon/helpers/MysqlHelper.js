@@ -42,12 +42,38 @@ var queryExecute = function(sql, params) {
 };
 
 /**
- * Find all record with active = 1
+ * Find all
  */
-var findAllActive = function() {
+var findAll = function() {
+    var deferred = Q.defer();
+    var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDALL;
+    var params = [this.tableName];
+    pool.getConnection(function(err,connection){
+        if (err) {
+            connection.release();
+            deferred.reject(err);
+        }else{
+            connection.query(sql, params, function(err,rows){
+                connection.release();
+                if(err) {
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(rows);
+                }
+            });
+        }
+    });
+    return deferred.promise;
+};
+
+/**
+ * Find all record with active = 1
+ * @param : activeFieldName - active name field
+ */
+var findAllActive = function(activeFieldName) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDALL_ACTIVE;
-    var params = [this.tableName];
+    var params = [this.tableName, activeFieldName];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -69,11 +95,12 @@ var findAllActive = function() {
 /**
  * find one by id
  * @param id : number
+ * @param : idName - id name field
  */
-var findOneById = function(id) {
+var findOneById = function(idName ,id) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDONE_BY_ID;
-    var params = [id];
+    var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -95,11 +122,12 @@ var findOneById = function(id) {
 /**
  * add new
  * @param obj : Object
+ * @param tableName : String
  */
-var addNew = function(obj) {
+var addNewCustom = function(tableName, obj) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_ADD_NEW;
-    var params = [this.tableName, obj];
+    var params = [tableName, obj];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -119,14 +147,23 @@ var addNew = function(obj) {
 };
 
 /**
+ * add new
+ * @param obj : Object
+ */
+var addNew = function(obj) {
+    return addNewCustom(this.tableName, obj);
+};
+
+/**
  * update
  * @param obj : Object
  * @param id : Number
+ * @param : idName - id name field
  */
-var update = function(obj, id) {
+var update = function(obj, idName, id) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_UPDATE;
-    var params = [this.tableName, obj, id];
+    var params = [this.tableName, obj, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -148,11 +185,12 @@ var update = function(obj, id) {
 /**
  * inactivate
  * @param id : Number
+ * @param : idName - id name field
  */
-var inactivate = function(id) {
+var inactivate = function(idName, id) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_DO_INACTIVE;
-    var params = [this.tableName, id];
+    var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -174,11 +212,12 @@ var inactivate = function(id) {
 /**
  * remove
  * @param id : Number
+ * @param : idName - id name field
  */
-var remove = function(id) {
+var remove = function(idName, id) {
     var deferred = Q.defer();
     var sql = SqlQueryContant.GENERIC_SQL.SLQ_REMOVE;
-    var params = [this.tableName, id];
+    var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
             connection.release();
@@ -199,8 +238,10 @@ var remove = function(id) {
 
 /*Export*/
 MysqlHelper.prototype.queryExecute = queryExecute;
+MysqlHelper.prototype.findAll = findAll;
 MysqlHelper.prototype.findAllActive = findAllActive;
 MysqlHelper.prototype.findOneById = findOneById;
+MysqlHelper.prototype.addNewCustom = addNewCustom;
 MysqlHelper.prototype.addNew = addNew;
 MysqlHelper.prototype.update = update;
 MysqlHelper.prototype.inactivate = inactivate;

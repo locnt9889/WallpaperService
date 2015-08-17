@@ -7,9 +7,9 @@ var mysql     =    require('mysql');
 var DB_CONFIG = {
     connectionLimit : 100, //important
     host     : '104.236.31.239',
-    user     : 'developer',
-    password : 'developer2015',
-    database : 'nodejsmysql',
+    user     : 'devchomoi',
+    password : 'Devchomoi2015',
+    database : 'chomoidb',
     debug    :  false
 }
 
