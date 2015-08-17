@@ -2,6 +2,8 @@
  * Created by LocNT on 7/29/15.
  */
 var MD5 = require("MD5");
+var https = require('https');
+var StringDecoder = require('string_decoder').StringDecoder;
 
 //var MysqlHelperModule = require("../helpers/MysqlHelper");
 var userDao = require("../daos/UserDao");
@@ -177,8 +179,178 @@ var loginByEmail = function(req, res){
     });
 };
 
+//add device token and create access token with login fb
+var addTokenWithLoginFb = function(deviceToken, accessToken, userID){
+    //Save Device Token
+    var userDeviceToken = new UserDeviceToken();
+    userDeviceToken.deviceTokenValue = deviceToken;
+    userDao.findDeviceTokenByValue(deviceToken).then(function(data){
+        var deviceTokenId = 0;
+        if(data.length ==0){
+            userDao.addNewCustom(Constant.TABLE_NAME_DB.USER_DEVICE_TOKEN, userDeviceToken).then(function(result){
+                console.log("save user device token success : " + JSON.stringify(result));
+                deviceTokenId = result.insertId;
+                addTokenAccess(userID, accessToken, deviceTokenId);
+            },function(err){
+                console.log("save user device token error : " + JSON.stringify(err));
+            });
+        }else{
+            deviceTokenId = data[0].deviceTokenID;
+            addTokenAccess(userID, accessToken, deviceTokenId);
+        }
+    },function(err){
+        console.log("find user device token error : " + JSON.stringify(err));
+    });
+}
+
+var loginByFb = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var fbAccessToken = req.body.fbAccessToken ? req.body.fbAccessToken : "";
+    var deviceToken = req.body.deviceToken ? req.body.deviceToken : "";
+
+    if(checkValidateUtil.isEmptyFeild(deviceToken)){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER_PARAMS_EMPTY;
+        responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY;
+        responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY.message;
+        res.send(responseObj);
+        return;
+    }
+
+    var optionsget = {
+        host : 'graph.facebook.com', // here only the domain name
+        port : 443,
+        path : '/me?access_token=' + fbAccessToken, // the rest of the url with parameters if needed
+        method : 'GET', // do GET
+        headers : {
+            'Content-Type' : 'application/json'
+        }
+    };
+
+    // do the GET request
+    var reqGet = https.request(optionsget, function(response) {
+        var decoder = new StringDecoder('utf8');
+        response.on('data', function(data) {
+            var text = decoder.write(data);
+            var jsonObj = {};
+            try {
+                jsonObj = JSON.parse(text);
+            }catch(e){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS;
+                responseObj.errorsObject = e;
+                responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS.message;
+                res.send(responseObj);
+                return;
+            }
+
+            //response error
+            if(jsonObj.error){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS;
+                responseObj.errorsObject = jsonObj.error;
+                responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS.message;
+                res.send(responseObj);
+                return;
+            }
+
+            //response varified == false
+            if(!jsonObj.verified){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
+                responseObj.errorsObject = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
+                responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID.message;
+                res.send(responseObj);
+                return;
+            }
+
+            var accessToken = serviceUtil.generateAccessToken();
+            console.log("accesstoken : " +  accessToken);
+
+            var email = jsonObj.email;
+            userDao.checkEmailExist(email).then(function(data){
+                if(data.length == 0){
+                    userDao.getUserStatusNEW().then(function(status){
+                        var userStatusId = 0;
+                        if(status.length > 0){
+                            userStatusId = status[0].userStatusID;
+                        }
+                        var user = new User();
+                        user.email = email;
+                        user.fullName = jsonObj.name;
+                        user.dateOfBirth = jsonObj.birthday;
+                        user.passWord = "******";
+                        user.gender = jsonObj.gender.toUpperCase();
+                        user.isFacebookAccount = true;
+                        user.userStatusID = userStatusId;
+                        user.avatarImageURL = Constant.USER_FB_AVATAR_LINK.replace("#fbID", jsonObj.id);
+                        user.isActive = true;
+
+                        userDao.addNew(user).then(function(result){
+                            var userLoginDto = new UserLoginDto();
+                            user.userID = result.insertId;
+                            userLoginDto.user = user;
+                            userLoginDto.accessToken = accessToken;
+
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                            responseObj.results = userLoginDto;
+                            res.send(responseObj);
+
+                            addTokenWithLoginFb(deviceToken, accessToken, result.insertId);
+                        },function(err){
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                            responseObj.errorsObject = err;
+                            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                            console.log(responseObj);
+                        });
+                    },function(err){
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                        responseObj.errorsObject = err;
+                        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                        console.log(responseObj);
+                    });
+                }else{
+                    var user = data[0];
+                    if(!user.isFacebookAccount) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_EMAIL_NON_FB;
+                        responseObj.errorsObject = message.USER_LOGIN.USER_LOGIN_FB_ERROR_EMAIL_NON_FB;
+                        responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_EMAIL_NON_FB.message;
+                        res.send(responseObj);
+                        return;
+                    }else{
+                        var userLoginDto = new UserLoginDto();
+                        user.passWord = "******";
+                        userLoginDto.user = user;
+                        userLoginDto.accessToken = accessToken;
+
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                        responseObj.results = userLoginDto;
+                        res.send(responseObj);
+
+                        addTokenWithLoginFb(deviceToken, accessToken, user.userID);
+                    }
+                }
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                console.log(responseObj);
+            });
+
+        });
+    });
+
+    reqGet.end();
+    reqGet.on('error', function(e) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS;
+        responseObj.errorsObject = e;
+        responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS.message;
+        res.send(responseObj);
+    });
+
+
+};
+
 /*Exports*/
 module.exports = {
     registerByEmail : registerByEmail,
-    loginByEmail : loginByEmail
+    loginByEmail : loginByEmail,
+    loginByFb : loginByFb
 }

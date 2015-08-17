@@ -17,4 +17,9 @@ router.post('/login-email', function(req, res, next) {
     userService.loginByEmail(req, res);
 });
 
+/* POST login. by fb */
+router.post('/login-fb', function(req, res, next) {
+    userService.loginByFb(req, res);
+});
+
 module.exports = router;
