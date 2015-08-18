@@ -7,6 +7,8 @@ var StringDecoder = require('string_decoder').StringDecoder;
 
 //var MysqlHelperModule = require("../helpers/MysqlHelper");
 var userDao = require("../daos/UserDao");
+var accessTokenDao = require("../daos/AccessTokenDao");
+
 var User = require("../models/User");
 var UserDeviceToken = require("../models/UserDeviceToken");
 var UserAccessToken = require("../models/UserAccessToken");
@@ -27,7 +29,7 @@ var registerByEmail = function(req, res){
     var fullname = req.body.fullname ? req.body.fullname : "";
 
     if(checkValidateUtil.isEmptyFeild(email) || checkValidateUtil.isEmptyFeild(password) || checkValidateUtil.isEmptyFeild(fullname)){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER_PARAMS_EMPTY;
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY;
         responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY;
         responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY.message;
         res.send(responseObj);
@@ -35,7 +37,7 @@ var registerByEmail = function(req, res){
     }
 
     if(!checkValidateUtil.checkValidateEmail(email)){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER_INVALID_EMAIL;
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_INVALID_EMAIL;
         responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_INVALID_EMAIL;
         responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_INVALID_EMAIL.message;
         res.send(responseObj);
@@ -43,7 +45,7 @@ var registerByEmail = function(req, res){
     }
 
     if(!checkValidateUtil.checkLengthPassword(password)){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER_ERROR_LENGTH_PASSWORD;
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
         responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
         responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD.message;
         res.send(responseObj);
@@ -81,7 +83,7 @@ var registerByEmail = function(req, res){
                 res.send(responseObj);
             });
         }else{
-            responseObj.statusErrorCode = Constant.CODE_STATUS.USER_EMAIL_EXISTED;
+            responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_EMAIL_EXISTED;
             responseObj.errorsObject = message.USER_REGISTER.USER_EMAIL_EXISTED;
             responseObj.errorsMessage = message.USER_REGISTER.USER_EMAIL_EXISTED.message;
             res.send(responseObj);
@@ -115,7 +117,7 @@ var loginByEmail = function(req, res){
     var deviceToken = req.body.deviceToken ? req.body.deviceToken : "";
 
     if(checkValidateUtil.isEmptyFeild(deviceToken)){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER_PARAMS_EMPTY;
+        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY;
         responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY;
         responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_PARAMS_EMPTY.message;
         res.send(responseObj);
@@ -345,12 +347,96 @@ var loginByFb = function(req, res){
         res.send(responseObj);
     });
 
+};
 
+var logout = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        var accessTokenId = accessTokenObj.id;
+        accessTokenDao.remove("id", accessTokenId).then(function(result){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = result;
+            res.send(responseObj);
+        },function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
+var changePassword = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        if(accessTokenObj.isFacebookAccount){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CHANGE_PASSWORD.ERROR_CHANGE_WITH_EMAIL_FB;
+            responseObj.errorsObject = message.USER_CHANGE_PASSWORD.ERROR_CHANGE_WITH_EMAIL_FB;
+            responseObj.errorsMessage = message.USER_CHANGE_PASSWORD.ERROR_CHANGE_WITH_EMAIL_FB.message;
+            res.send(responseObj);
+            return;
+        }
+
+        var oldPassword = req.body.oldPassword ? req.body.oldPassword : "";
+        var newPassword = req.body.newPassword ? req.body.newPassword : "";
+
+        if(!checkValidateUtil.checkLengthPassword(newPassword)){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
+            responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
+            responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD.message;
+            res.send(responseObj);
+            return;
+        }
+
+        var email = accessTokenObj.email;
+        userDao.checkLogin(email, MD5(oldPassword)).then(function(data){
+            if(data.length > 0){
+                var userID = data[0].userID;
+
+                userDao.changePassword(userID, MD5(newPassword)).then(function(result){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                    responseObj.results = result;
+                    res.send(responseObj);
+                },function(err){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;
+                    responseObj.errorsObject = message.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;
+                    responseObj.errorsMessage = message.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT.message;
+                    res.send(responseObj);
+                });
+            }else{
+                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;
+                responseObj.errorsObject = message.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;
+                responseObj.errorsMessage = message.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT.message;
+                res.send(responseObj);
+            }
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
 };
 
 /*Exports*/
 module.exports = {
     registerByEmail : registerByEmail,
     loginByEmail : loginByEmail,
-    loginByFb : loginByFb
+    loginByFb : loginByFb,
+    logout : logout,
+    changePassword : changePassword
 }

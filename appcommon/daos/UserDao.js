@@ -39,5 +39,11 @@ MysqlHelper.prototype.findDeviceTokenByValue = function(deviceToken){
     return userDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.changePassword = function(userID, newPasswordMD5){
+    var sql = SqlQueryContant.USER_SQL_SCRIPT.SLQ_CHANGE_PASSWORD;
+    var params = [newPasswordMD5, userID];
+    return userDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = userDao;

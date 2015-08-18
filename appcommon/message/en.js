@@ -17,6 +17,11 @@ var DB_EXECUTE_ERROR = {
     message : "Database query is failure!"
 }
 
+var ACCESS_TOKEN_INVALID = {
+    code : 3,
+    message : "Access token is invalid!"
+}
+
 var USER_REGISTER = {
     USER_EMAIL_EXISTED : {
         code: 101,
@@ -59,11 +64,24 @@ var USER_LOGIN = {
     }
 }
 
+var USER_CHANGE_PASSWORD = {
+    ERROR_CHANGE_WITH_EMAIL_FB : {
+        code: 301,
+        message: "Can not change password of FB user!"
+    },
+    ERROR_OLD_PASSWORD_INCORRECT : {
+        code: 302,
+        message: "Old password is incorrect!"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
     DB_EXECUTE_ERROR : DB_EXECUTE_ERROR,
+    ACCESS_TOKEN_INVALID : ACCESS_TOKEN_INVALID,
     USER_REGISTER : USER_REGISTER,
-    USER_LOGIN : USER_LOGIN
+    USER_LOGIN : USER_LOGIN,
+    USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD
 
 }
