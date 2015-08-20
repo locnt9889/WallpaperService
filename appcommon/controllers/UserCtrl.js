@@ -33,4 +33,14 @@ router.post('/changePassword', [accessTokenService.checkAccessToken, function(re
     userService.changePassword(req, res);
 }]);
 
+/* POST get user profile */
+router.post('/getUserProfile', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.getUserProfile(req, res);
+}]);
+
+/* POST update user profile */
+router.post('/updateUserProfile', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.updateUserProfile(req, res);
+}]);
+
 module.exports = router;

@@ -19,6 +19,7 @@ var Constant = require("../helpers/Contant");
 var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
+var UserUpdateDTO = require("../modelsDto/UserUpdateDTO");
 
 var ID_FIELD_NAME = "id";
 
@@ -44,13 +45,13 @@ var registerByEmail = function(req, res){
         return;
     }
 
-    if(!checkValidateUtil.checkLengthPassword(password)){
+    /*if(!checkValidateUtil.checkLengthPassword(password)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
         responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
         responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD.message;
         res.send(responseObj);
         return;
-    }
+    }*/
 
     userDao.checkEmailExist(email).then(function(data){
         if(data.length == 0){
@@ -394,13 +395,13 @@ var changePassword = function(req, res){
         var oldPassword = req.body.oldPassword ? req.body.oldPassword : "";
         var newPassword = req.body.newPassword ? req.body.newPassword : "";
 
-        if(!checkValidateUtil.checkLengthPassword(newPassword)){
+        /*if(!checkValidateUtil.checkLengthPassword(newPassword)){
             responseObj.statusErrorCode = Constant.CODE_STATUS.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
             responseObj.errorsObject = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD;
             responseObj.errorsMessage = message.USER_REGISTER.USER_REGISTER_ERROR_LENGTH_PASSWORD.message;
             res.send(responseObj);
             return;
-        }
+        }*/
 
         var email = accessTokenObj.email;
         userDao.checkLogin(email, MD5(oldPassword)).then(function(data){
@@ -432,11 +433,81 @@ var changePassword = function(req, res){
     }
 };
 
+var getUserProfile = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+
+        var userID = accessTokenObj.userID;
+        userDao.getUserProfileById(userID).then(function(data){
+            if(data.length > 0){
+                data[0].passWord = "******";
+            }
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
+var updateUserProfile = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var dateOfBirth = req.body.dateOfBirth ? req.body.dateOfBirth : "0000-00-00 00:00:00";
+    var iShowEmail = req.body.iShowEmail ? req.body.iShowEmail : false;
+    var fullname = req.body.fullname ? req.body.fullname : "";
+    var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : "";
+    var isShowPhoneNumber = req.body.isShowPhoneNumber ? req.body.isShowPhoneNumber : "";
+    var gender = req.body.gender ? req.body.gender : "";
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else {
+        var userID = accessTokenObj.userID;
+        var userUpdateDTO = new UserUpdateDTO();
+        userUpdateDTO.dateOfBirth = dateOfBirth;
+        userUpdateDTO.iShowEmail = iShowEmail;
+        userUpdateDTO.fullName = fullname;
+        userUpdateDTO.phoneNumber = phoneNumber;
+        userUpdateDTO.isShowPhoneNumber = isShowPhoneNumber;
+        userUpdateDTO.gender = gender;
+
+        userDao.update(userUpdateDTO, "userID", userID).then(function (result) {
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = result;
+            res.send(responseObj);
+        }, function (err) {
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+
+    }
+};
+
 /*Exports*/
 module.exports = {
     registerByEmail : registerByEmail,
     loginByEmail : loginByEmail,
     loginByFb : loginByFb,
     logout : logout,
-    changePassword : changePassword
+    changePassword : changePassword,
+    getUserProfile : getUserProfile,
+    updateUserProfile : updateUserProfile
 }

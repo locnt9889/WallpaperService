@@ -45,7 +45,7 @@ var USER_STATUS_VALUE = {
     NEW : "NEW"
 }
 
-var USER_FB_AVATAR_LINK = "https://graph.facebook.com/#fbID/picture?type=small";
+var USER_FB_AVATAR_LINK = "https://graph.facebook.com/#fbID/picture?type=large";
 
 /*Exports*/
 

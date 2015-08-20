@@ -9,7 +9,7 @@ function User(){
     this.iShowEmail = false;
     this.passWord = "";
     this.fullName = "";
-    this.dateOfBirth = "0000-00-00 00:00";
+    this.dateOfBirth = "0000-00-00 00:00:00";
     this.gender = "MALE"
     this.phoneNumber = "";
     this.isShowPhoneNumber = false;

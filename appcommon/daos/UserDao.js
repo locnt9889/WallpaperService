@@ -45,5 +45,11 @@ MysqlHelper.prototype.changePassword = function(userID, newPasswordMD5){
     return userDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.getUserProfileById = function(userID){
+    var sql = SqlQueryContant.USER_SQL_SCRIPT.SQL_GET_USER_PROFILE;
+    var params = [userID];
+    return userDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = userDao;
