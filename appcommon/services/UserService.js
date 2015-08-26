@@ -10,16 +10,17 @@ var userDao = require("../daos/UserDao");
 var accessTokenDao = require("../daos/AccessTokenDao");
 
 var User = require("../models/User");
+
 var UserDeviceToken = require("../models/UserDeviceToken");
 var UserAccessToken = require("../models/UserAccessToken");
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var UserLoginDto = require("../modelsDto/UserLoginDto");
+var UserUpdateDTO = require("../modelsDto/UserUpdateDTO");
 
 var Constant = require("../helpers/Contant");
 var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
-var UserUpdateDTO = require("../modelsDto/UserUpdateDTO");
 
 var ID_FIELD_NAME = "id";
 
@@ -55,7 +56,7 @@ var registerByEmail = function(req, res){
 
     userDao.checkEmailExist(email).then(function(data){
         if(data.length == 0){
-            userDao.getUserStatusNEW().then(function(status){
+            userDao.getUserStatusByValue(Constant.USER_STATUS_VALUE.ACTIVE).then(function(status){
                 var userStatusId = 0;
                 if(status.length > 0){
                     userStatusId = status[0].userStatusID;
@@ -270,7 +271,7 @@ var loginByFb = function(req, res){
             var email = jsonObj.email;
             userDao.checkEmailExist(email).then(function(data){
                 if(data.length == 0){
-                    userDao.getUserStatusNEW().then(function(status){
+                    userDao.findDeviceTokenByValue(Constant.USER_STATUS_VALUE.ACTIVE).then(function(status){
                         var userStatusId = 0;
                         if(status.length > 0){
                             userStatusId = status[0].userStatusID;
@@ -289,6 +290,10 @@ var loginByFb = function(req, res){
                         userDao.addNew(user).then(function(result){
                             var userLoginDto = new UserLoginDto();
                             user.userID = result.insertId;
+
+                            //add statusValue
+                            user.statusValue = Constant.USER_STATUS_VALUE.ACTIVE;
+
                             userLoginDto.user = user;
                             userLoginDto.accessToken = accessToken;
 

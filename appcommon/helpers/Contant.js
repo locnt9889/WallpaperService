@@ -42,7 +42,9 @@ var CODE_STATUS = {
 }
 
 var USER_STATUS_VALUE = {
-    NEW : "NEW"
+    NEW : "NEW",
+    BLOCK : "BLOCK",
+    ACTIVE : "ACTIVE"
 }
 
 var USER_FB_AVATAR_LINK = "https://graph.facebook.com/#fbID/picture?type=large";

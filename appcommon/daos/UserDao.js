@@ -21,9 +21,9 @@ MysqlHelper.prototype.checkEmailExist = function(email){
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getUserStatusNEW = function(){
+MysqlHelper.prototype.getUserStatusByValue = function(value){
     var sql = SqlQueryContant.USER_SQL_SCRIPT.USER_STATUS_SCRIPT.GET_USER_STATUS_ID_BY_VALUE;
-    var params = [Constant.USER_STATUS_VALUE.NEW];
+    var params = [value];
     return userDao.queryExecute(sql, params);
 };
 

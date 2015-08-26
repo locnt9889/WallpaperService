@@ -17,7 +17,7 @@ var ACCESS_TOKEN_MODULE = {
 }
 
 var USER_SQL_SCRIPT = {
-    CHECK_EMAIL_EXIST : "SELECT * FROM User WHERE email = ?",
+    CHECK_EMAIL_EXIST : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust WHERE email = ?",
     CHECK_LOGIN : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust WHERE email = ? AND passWord = ? AND isActive = 1",
     USER_STATUS_SCRIPT : {
         GET_USER_STATUS_ID_BY_VALUE : "SELECT userStatusID FROM User_Status WHERE statusValue = ?"
