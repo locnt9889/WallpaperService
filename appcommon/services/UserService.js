@@ -417,6 +417,16 @@ var changePassword = function(req, res){
                     responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                     responseObj.results = result;
                     res.send(responseObj);
+
+                    //remove all other access_token
+                    var accesTkValue = accessTokenObj.accessTokenValue;
+
+                    accessTokenDao.removeAllOtherAccessTokenByUserId(accesTkValue, userID).then(function(result){
+                        console.log("removeAllOtherAccessTokenByUserId success");
+                    },function(err){
+                        console.log("removeAllOtherAccessTokenByUserId error");
+                    });
+
                 },function(err){
                     responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;
                     responseObj.errorsObject = message.USER_CHANGE_PASSWORD.ERROR_OLD_PASSWORD_INCORRECT;

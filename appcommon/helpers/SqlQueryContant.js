@@ -13,7 +13,7 @@ var GENERIC_SQL = {
 }
 
 var ACCESS_TOKEN_MODULE = {
-    SQL_CHECK_ACCESS : "SELECT * FROM person_access WHERE access_token = ? AND active = 1"
+    SQL_CHECK_ACCESS : "SELECT * FROM person_access WHERE access_token = ? AND active = 1",
 }
 
 var USER_SQL_SCRIPT = {
@@ -23,8 +23,11 @@ var USER_SQL_SCRIPT = {
         GET_USER_STATUS_ID_BY_VALUE : "SELECT userStatusID FROM User_Status WHERE statusValue = ?"
     },
     FIND_DEVICE_TOKEN_BY_VALUE : "SELECT * FROM User_Device_Token WHERE deviceTokenValue = ?",
+
     SLQ_CHANGE_PASSWORD : "UPDATE User SET passWord = ? WHERE userID = ?",
+    SLQ_REMOVE_ALL_OTHER_BY_USER : "DELETE FROM User_Access_Token WHERE accessTokenValue != ? AND userID = ?",
     SQL_CHECK_ACCESS_TOKEN : "SELECT udt.id, udt.accessTokenValue, u.* FROM User u INNER JOIN User_Access_Token udt ON u.userID = udt.userID WHERE udt.accessTokenValue = ?",
+
     SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?"
 }
 
