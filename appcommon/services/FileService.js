@@ -7,7 +7,7 @@ var multiparty = require('multiparty');
 var fs = require('fs');
 var path = require("path");
 
-var Constant = require("../helpers/Contant");
+var Constant = require("../helpers/Constant");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
 
 function uploadFile(req, res) {
@@ -27,7 +27,7 @@ function uploadFile(req, res) {
             return;
         }
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.IMAGE).then(function(fullFilePath){
             res.send({'path' : fullFilePath});
             return;
         },function(err){
@@ -37,9 +37,9 @@ function uploadFile(req, res) {
     });
 }
 
-function viewFile(req, res) {
+function viewFile(req, res, preFolder) {
     var file = req.params.file;
-    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE + file;
+    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + preFolder + file;
     fs.exists(fullFile, function(result){
         if(result){
             res.sendfile(path.resolve(fullFile));

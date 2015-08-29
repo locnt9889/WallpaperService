@@ -7,13 +7,13 @@ var Q = require("q");
 var DbConfig = require("../helpers/DatabaseConfig");
 var pool = DbConfig.pool;
 
-var SqlQueryContant = require("../helpers/SqlQueryContant");
+var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 var MysqlHelper = require("../helpers/MysqlHelper");
 
 var PersonAccessDao = new MysqlHelper("person_access");
 var checkAccessToken = function(accessToken){
     var deferred = Q.defer();
-    var sql = SqlQueryContant.ACCESS_TOKEN_MODULE.SQL_CHECK_ACCESS;
+    var sql = SqlQueryConstant.ACCESS_TOKEN_MODULE.SQL_CHECK_ACCESS;
     var params = [accessToken];
     pool.getConnection(function(err,connection){
         if (err) {

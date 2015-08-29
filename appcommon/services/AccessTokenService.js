@@ -4,7 +4,7 @@
 
 var accessTokenDao = new require("../daos/AccessTokenDao");
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
-var Constant = require("../helpers/Contant");
+var Constant = require("../helpers/Constant");
 var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 

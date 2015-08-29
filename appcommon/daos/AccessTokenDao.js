@@ -4,14 +4,14 @@
 
 var Q = require("q");
 
-var SqlQueryContant = require("../helpers/SqlQueryContant");
+var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 var MysqlHelper = require("../helpers/MysqlHelper");
 
 var AccessTokenDao = new MysqlHelper("User_Access_Token");
 
 var checkAccessToken = function(accessToken){
     var deffered = Q.defer();
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.SQL_CHECK_ACCESS_TOKEN;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_CHECK_ACCESS_TOKEN;
     var params = [accessToken];
 
     AccessTokenDao.queryExecute(sql,params).then(function(result){
@@ -25,7 +25,7 @@ var checkAccessToken = function(accessToken){
 
 var removeAllOtherAccessTokenByUserId = function(accessToken, userId){
     var deffered = Q.defer();
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.SLQ_REMOVE_ALL_OTHER_BY_USER;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.SLQ_REMOVE_ALL_OTHER_BY_USER;
     var params = [accessToken, userId];
 
     AccessTokenDao.queryExecute(sql,params).then(function(result){

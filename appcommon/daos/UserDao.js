@@ -4,10 +4,10 @@
 var Q = require("q");
 //var DbConfig = require("./DatabaseConfig");
 //var pool = DbConfig.pool;
-var SqlQueryContant = require("../helpers/SqlQueryContant");
+var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 
 var MysqlHelper = new require("../helpers/MysqlHelper");
-var Constant = require("../helpers/Contant");
+var Constant = require("../helpers/Constant");
 var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER);
 
 
@@ -16,37 +16,37 @@ MysqlHelper.prototype.test = function(){
 }
 
 MysqlHelper.prototype.checkEmailExist = function(email){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.CHECK_EMAIL_EXIST;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.CHECK_EMAIL_EXIST;
     var params = [email];
     return userDao.queryExecute(sql, params);
 };
 
 MysqlHelper.prototype.getUserStatusByValue = function(value){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.USER_STATUS_SCRIPT.GET_USER_STATUS_ID_BY_VALUE;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.USER_STATUS_SCRIPT.GET_USER_STATUS_ID_BY_VALUE;
     var params = [value];
     return userDao.queryExecute(sql, params);
 };
 
 MysqlHelper.prototype.checkLogin = function(email, password){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.CHECK_LOGIN;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.CHECK_LOGIN;
     var params = [email, password];
     return userDao.queryExecute(sql, params);
 };
 
 MysqlHelper.prototype.findDeviceTokenByValue = function(deviceToken){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.FIND_DEVICE_TOKEN_BY_VALUE;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.FIND_DEVICE_TOKEN_BY_VALUE;
     var params = [deviceToken];
     return userDao.queryExecute(sql, params);
 };
 
 MysqlHelper.prototype.changePassword = function(userID, newPasswordMD5){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.SLQ_CHANGE_PASSWORD;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.SLQ_CHANGE_PASSWORD;
     var params = [newPasswordMD5, userID];
     return userDao.queryExecute(sql, params);
 };
 
 MysqlHelper.prototype.getUserProfileById = function(userID){
-    var sql = SqlQueryContant.USER_SQL_SCRIPT.SQL_GET_USER_PROFILE;
+    var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_GET_USER_PROFILE;
     var params = [userID];
     return userDao.queryExecute(sql, params);
 };

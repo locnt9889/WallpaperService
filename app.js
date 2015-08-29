@@ -42,8 +42,8 @@ var personCtrl = require("./appcommon/controllers/PersonCtrl");
 app.use('/demo/person', personCtrl);
 
 //upload file controller for demo
-var uploadFileCtrl = require("./appcommon/controllers/UploadFileCtrl");
-app.use('/demo/upload', uploadFileCtrl);
+var fileCtrl = require("./appcommon/controllers/FileCtrl");
+app.use('/api/file', fileCtrl);
 
 //user controller for api
 var userCtrl = require("./appcommon/controllers/UserCtrl");

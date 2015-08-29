@@ -6,10 +6,13 @@ var Q = require("q");
 var fs = require('fs');
 var path = require("path");
 
-var Constant = require("../helpers/Contant");
+var Constant = require("../helpers/Constant");
 
 function writeFileUpload(fileName, filePath, preFolder){
     var deferred = Q.defer();
+
+    //remove white space in filename
+
     fs.readFile(filePath, function (err,data) {
         if (err) {
             deferred.reject(err);

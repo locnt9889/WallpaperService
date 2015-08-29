@@ -6,7 +6,7 @@ var Q = require('q');
 
 var DbConfig = require("./DatabaseConfig");
 var pool = DbConfig.pool;
-var SqlQueryContant = require("../helpers/SqlQueryContant");
+var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 
 /**
  * Object MysqlHelper is generic Dao
@@ -46,7 +46,7 @@ var queryExecute = function(sql, params) {
  */
 var findAll = function() {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDALL;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_FINDALL;
     var params = [this.tableName];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -72,7 +72,7 @@ var findAll = function() {
  */
 var findAllActive = function(activeFieldName) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDALL_ACTIVE;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_FINDALL_ACTIVE;
     var params = [this.tableName, activeFieldName];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -99,7 +99,7 @@ var findAllActive = function(activeFieldName) {
  */
 var findOneById = function(idName ,id) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_FINDONE_BY_ID;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_FINDONE_BY_ID;
     var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -126,7 +126,7 @@ var findOneById = function(idName ,id) {
  */
 var addNewCustom = function(tableName, obj) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_ADD_NEW;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_ADD_NEW;
     var params = [tableName, obj];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -162,7 +162,7 @@ var addNew = function(obj) {
  */
 var update = function(obj, idName, id) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_UPDATE;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_UPDATE;
     var params = [this.tableName, obj, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -189,7 +189,7 @@ var update = function(obj, idName, id) {
  */
 var inactivate = function(idName, id) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_DO_INACTIVE;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_DO_INACTIVE;
     var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {
@@ -216,7 +216,7 @@ var inactivate = function(idName, id) {
  */
 var remove = function(idName, id) {
     var deferred = Q.defer();
-    var sql = SqlQueryContant.GENERIC_SQL.SLQ_REMOVE;
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_REMOVE;
     var params = [this.tableName, idName, id];
     pool.getConnection(function(err,connection){
         if (err) {

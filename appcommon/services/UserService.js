@@ -4,6 +4,7 @@
 var MD5 = require("MD5");
 var https = require('https');
 var StringDecoder = require('string_decoder').StringDecoder;
+var multiparty = require('multiparty');
 
 //var MysqlHelperModule = require("../helpers/MysqlHelper");
 var userDao = require("../daos/UserDao");
@@ -17,10 +18,11 @@ var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var UserLoginDto = require("../modelsDto/UserLoginDto");
 var UserUpdateDTO = require("../modelsDto/UserUpdateDTO");
 
-var Constant = require("../helpers/Contant");
+var Constant = require("../helpers/Constant");
 var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
+var uploadFileHelper = require("../helpers/UploadFileHelper");
 
 var ID_FIELD_NAME = "id";
 
@@ -515,6 +517,35 @@ var updateUserProfile = function(req, res){
 
     }
 };
+
+//upload avatar
+function updateAvatar(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            res.send(err);
+            return;
+        }
+        if(files.imageFile.length == 0){
+            res.send({'errcode' : "EMPTY"});
+            return;
+        }
+        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE){
+            res.send({'errcode' : "LIMITED"});
+            return;
+        }
+
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE).then(function(fullFilePath){
+            res.send({'path' : fullFilePath});
+            return;
+        },function(err){
+            res.send(err);
+            return;
+        });
+    });
+}
 
 /*Exports*/
 module.exports = {

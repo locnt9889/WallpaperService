@@ -24,54 +24,65 @@ var ACCESS_TOKEN_INVALID = {
 
 var USER_REGISTER = {
     USER_EMAIL_EXISTED : {
-        code: 101,
+        code: 1001,
         message: "Email has existed!"
     },
     USER_REGISTER_PARAMS_EMPTY : {
-        code: 102,
+        code: 1002,
         message: "Error empty with parameter required!"
     },
     USER_REGISTER_INVALID_EMAIL : {
-        code: 103,
+        code: 1003,
         message: "Email is invalid!"
     },
     USER_REGISTER_ERROR_LENGTH_PASSWORD : {
-        code: 104,
+        code: 1004,
         message: "Password have length between 6 and 20!"
     }
 }
 
 var USER_LOGIN = {
     USER_LOGIN_INCORRECT : {
-        code : 201,
+        code : 1101,
         message : "Login is failure, Email or Password is incorrect!"
     },
     USER_LOGIN_EMAIL_FB : {
-        code: 202,
+        code: 1102,
         message: "Login is failure, please login by FB with this email!"
     },
     USER_LOGIN_FB_ERROR_GET_PROFILE_ACCESS : {
-        code: 203,
+        code: 1103,
         message: "Login facebook, get info of access token is failure!"
     },
     USER_LOGIN_FB_ERROR_EMAIL_NON_FB : {
-        code: 204,
+        code: 1104,
         message: "Login facebook, user is not a user fb!"
     },
     USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID : {
-        code: 205,
+        code: 1105,
         message: "Login facebook, access token is invalid!"
     }
 }
 
 var USER_CHANGE_PASSWORD = {
     ERROR_CHANGE_WITH_EMAIL_FB : {
-        code: 301,
+        code: 1201,
         message: "Can not change password of FB user!"
     },
     ERROR_OLD_PASSWORD_INCORRECT : {
-        code: 302,
+        code: 1202,
         message: "Old password is incorrect!"
+    }
+}
+
+var UPLOAD_FILE = {
+    ERROR_EMPTY_FILE : {
+        code: 1301,
+        message: "File upload is empty!"
+    },
+    ERROR_LIMITED_SIZE: {
+        code: 1302,
+        message: "File upload is limited size!"
     }
 }
 
@@ -82,6 +93,7 @@ module.exports = {
     ACCESS_TOKEN_INVALID : ACCESS_TOKEN_INVALID,
     USER_REGISTER : USER_REGISTER,
     USER_LOGIN : USER_LOGIN,
-    USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD
+    USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD,
+    UPLOAD_FILE : UPLOAD_FILE
 
 }
