@@ -9,8 +9,18 @@ var generateAccessToken = function(){
     return newUuid;
 }
 
+var getExtFileByName = function(fileName) {
+    var lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex == -1) {
+        return "";
+    } else{
+        return fileName.substr(lastDotIndex);
+    }
+}
+
 /*Export*/
 
 module.exports = {
-    generateAccessToken : generateAccessToken
+    generateAccessToken : generateAccessToken,
+    getExtFileByName : getExtFileByName
 }

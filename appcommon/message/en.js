@@ -76,12 +76,16 @@ var USER_CHANGE_PASSWORD = {
 }
 
 var UPLOAD_FILE = {
-    ERROR_EMPTY_FILE : {
+    UPLOAD_FAIL : {
         code: 1301,
+        message: "File upload is failure!"
+    },
+    ERROR_EMPTY_FILE : {
+        code: 1302,
         message: "File upload is empty!"
     },
     ERROR_LIMITED_SIZE: {
-        code: 1302,
+        code: 1303,
         message: "File upload is limited size!"
     }
 }

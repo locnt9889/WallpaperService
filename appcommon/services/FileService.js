@@ -18,16 +18,16 @@ function uploadFile(req, res) {
             res.send(err);
             return;
         }
-        if(files.imageFile.length == 0){
+        if(files.imageFile.length == 0|| files.imageFile[0].size == 0){
             res.send({'errcode' : "EMPTY"});
             return;
         }
-        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE){
+        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE.IMAGE){
             res.send({'errcode' : "LIMITED"});
             return;
         }
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.IMAGE).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, "Demo",files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.IMAGE).then(function(fullFilePath){
             res.send({'path' : fullFilePath});
             return;
         },function(err){

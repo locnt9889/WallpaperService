@@ -43,4 +43,14 @@ router.post('/updateUserProfile', [accessTokenService.checkAccessToken, function
     userService.updateUserProfile(req, res);
 }]);
 
+/* POST update user profile */
+router.post('/updateUserAvatar', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.updateAvatar(req, res);
+}]);
+
+/* POST update user profile */
+router.post('/updateUserCover', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.updateCover(req, res);
+}]);
+
 module.exports = router;

@@ -10,7 +10,11 @@ var TABLE_NAME_DB = {
 }
 
 var UPLOAD_FILE_CONFIG = {
-    MAX_SIZE_IMAGE : 3145728, //3Mb
+    MAX_SIZE_IMAGE : {
+        IMAGE : 3145728,//3Mb
+        USER_AVATAR : 3145728,//3Mb
+        USER_COVER : 5242880,//5Mb
+    },
     UPLOAD_FOLDER : "uploads",
     PRE_FORDER_IMAGE : {
         IMAGE : "/Images/Demo/",
@@ -45,8 +49,9 @@ var CODE_STATUS = {
     },
 
     UPLOAD_FILE : {
-        ERROR_EMPTY_FILE : 1301,
-        ERROR_LIMITED_SIZE: 1302
+        UPLOAD_FAIL : 1301,
+        ERROR_EMPTY_FILE : 1302,
+        ERROR_LIMITED_SIZE: 1303
     }
 }
 
