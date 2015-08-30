@@ -53,4 +53,9 @@ router.post('/updateUserCover', [accessTokenService.checkAccessToken, function(r
     userService.updateCover(req, res);
 }]);
 
+/* POST search user by fullName and email */
+router.post('/searchUser', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.searchUser(req, res);
+}]);
+
 module.exports = router;

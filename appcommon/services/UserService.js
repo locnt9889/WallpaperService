@@ -639,6 +639,35 @@ function updateCover(req, res) {
     });
 }
 
+var searchUser = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        var userID = accessTokenObj.userID;
+        var searchText = req.body.searchText;
+
+        var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+        var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
+        userDao.searchUser(searchText, pageNum, perPage).then(function(data){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 /*Exports*/
 module.exports = {
     registerByEmail : registerByEmail,
@@ -649,5 +678,6 @@ module.exports = {
     getUserProfile : getUserProfile,
     updateUserProfile : updateUserProfile,
     updateAvatar : updateAvatar,
-    updateCover : updateCover
+    updateCover : updateCover,
+    searchUser : searchUser
 }

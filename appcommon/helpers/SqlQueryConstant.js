@@ -28,7 +28,10 @@ var USER_SQL_SCRIPT = {
     SLQ_REMOVE_ALL_OTHER_BY_USER : "DELETE FROM User_Access_Token WHERE accessTokenValue != ? AND userID = ?",
     SQL_CHECK_ACCESS_TOKEN : "SELECT udt.id, udt.accessTokenValue, u.* FROM User u INNER JOIN User_Access_Token udt ON u.userID = udt.userID WHERE udt.accessTokenValue = ?",
 
-    SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?"
+    SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?",
+    
+    SQL_SEARCH_USER : "SELECT userID, email, iShowEmail, fullName, dateOfBirth, gender, phoneNumber, isShowPhoneNumber, avatarImageURL, coverImageURL, isFacebookAccount FROM User WHERE fullName LIKE ? OR email LIKE ? LIMIT ?, ?",
+    SQL_COUNT_NUMBER_SEARCH_USER : "SELECT COUNT(userID) as totalItems FROM User WHERE fullName LIKE ? OR email LIKE ?"
 }
 
 /*Exports*/

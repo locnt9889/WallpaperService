@@ -9,6 +9,7 @@ var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 var MysqlHelper = new require("../helpers/MysqlHelper");
 var Constant = require("../helpers/Constant");
 var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER);
+var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
 
 MysqlHelper.prototype.test = function(){
@@ -49,6 +50,44 @@ MysqlHelper.prototype.getUserProfileById = function(userID){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_GET_USER_PROFILE;
     var params = [userID];
     return userDao.queryExecute(sql, params);
+};
+
+MysqlHelper.prototype.searchUser = function(searchText, pageNum, perPage){
+    var def = Q.defer();
+
+    var start = perPage * (pageNum-1);
+    var text = "%" + searchText + "%";
+
+    var sqlCount = SqlQueryConstant.USER_SQL_SCRIPT.SQL_COUNT_NUMBER_SEARCH_USER;
+    var paramCount = [text, text];
+    userDao.queryExecute(sqlCount, paramCount).then(function(data){
+        var responsePagingDto = new ResponsePagingDto();
+        var totalItems = data[0].totalItems;
+        var totalPages = parseInt(totalItems / perPage);
+        if((totalItems / perPage) > totalPages){
+            totalPages = totalPages + 1;
+        }
+
+        responsePagingDto.pageNum = pageNum;
+        responsePagingDto.perPage = perPage;
+        responsePagingDto.totalItems = totalItems;
+        responsePagingDto.totalPages = totalPages;
+
+        var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_SEARCH_USER;
+        var params = [text, text, start, perPage];
+        userDao.queryExecute(sql, params).then(function(data1){
+            responsePagingDto.items = data1;
+
+            def.resolve(responsePagingDto);
+        }, function(err){
+            def.reject(err);
+        });
+    }, function(err){
+        def.reject(err);
+    });
+
+    return def.promise;
+
 };
 
 /*Export*/
