@@ -30,7 +30,7 @@ var USER_SQL_SCRIPT = {
 
     SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?",
     
-    SQL_SEARCH_USER : "SELECT userID, email, iShowEmail, fullName, dateOfBirth, gender, phoneNumber, isShowPhoneNumber, avatarImageURL, coverImageURL, isFacebookAccount FROM User WHERE fullName LIKE ? OR email LIKE ? LIMIT ?, ?",
+    SQL_SEARCH_USER : "SELECT userID, email, iShowEmail, fullName, dateOfBirth, gender, phoneNumber, isShowPhoneNumber, avatarImageURL, coverImageURL, isFacebookAccount FROM User WHERE isActive=1 AND ( fullName LIKE ? OR email LIKE ? ) LIMIT ?, ?",
     SQL_COUNT_NUMBER_SEARCH_USER : "SELECT COUNT(userID) as totalItems FROM User WHERE fullName LIKE ? OR email LIKE ?"
 }
 
