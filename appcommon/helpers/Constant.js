@@ -4,7 +4,18 @@
 
 var TABLE_NAME_DB = {
     PERSON : "person",
-    USER : "User",
+    USER : {
+        NAME : "User",
+        NAME_FIELD_ID : "userID"
+    },
+    USER_CONTACTS : {
+        NAME : "User_Contacts",
+        NAME_FIELD_ID : "id"
+    },
+    USER_CONTACT_STATUS : {
+        NAME : "User_Contact_Status",
+        NAME_FIELD_ID : "statusID"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -52,6 +63,9 @@ var CODE_STATUS = {
         UPLOAD_FAIL : 1301,
         ERROR_EMPTY_FILE : 1302,
         ERROR_LIMITED_SIZE: 1303
+    },
+    USER_CONTACT : {
+        ERROR_USER_NOT_FOUND : 1401
     }
 }
 
@@ -62,12 +76,21 @@ var USER_STATUS_VALUE = {
 }
 
 var USER_FB_AVATAR_LINK = "https://graph.facebook.com/#fbID/picture?type=large";
-/*Exports*/
 
+var USER_CONTACT_STATUS_VALUE = {
+    REQUEST_MAKE_FRIEND : "REQUEST_MAKE_FRIEND",
+    WATTING_FOR_ACCEPT_REQUEST : "WATTING_FOR_ACCEPT_REQUEST",
+    DENY_MAKE_FRIEND_REQUEST : "DENY_MAKE_FRIEND_REQUEST",
+    FRIEND : "FRIEND",
+    BLOCK_USER_CONTACT : "BLOCK_USER_CONTACT"
+}
+
+/*Exports*/
 module.exports = {
     UPLOAD_FILE_CONFIG : UPLOAD_FILE_CONFIG,
     TABLE_NAME_DB : TABLE_NAME_DB,
     CODE_STATUS : CODE_STATUS,
     USER_STATUS_VALUE : USER_STATUS_VALUE,
-    USER_FB_AVATAR_LINK : USER_FB_AVATAR_LINK
+    USER_FB_AVATAR_LINK : USER_FB_AVATAR_LINK,
+    USER_CONTACT_STATUS_VALUE : USER_CONTACT_STATUS_VALUE
 }

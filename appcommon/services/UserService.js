@@ -25,7 +25,7 @@ var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
 
-var ID_FIELD_NAME = "id";
+var ID_FIELD_NAME = Constant.TABLE_NAME_DB.USER.NAME_FIELD_ID;
 
 var registerByEmail = function(req, res){
     var responseObj = new ResponseServerDto();
@@ -505,7 +505,7 @@ var updateUserProfile = function(req, res){
         userUpdateDTO.isShowPhoneNumber = isShowPhoneNumber;
         userUpdateDTO.gender = gender;
 
-        userDao.update(userUpdateDTO, "userID", userID).then(function (result) {
+        userDao.update(userUpdateDTO, ID_FIELD_NAME, userID).then(function (result) {
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = result;
             res.send(responseObj);
@@ -558,7 +558,7 @@ function updateAvatar(req, res) {
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 
-            userDao.update({"avatarImageURL" : fullFilePath}, "userID", userID).then(function (result) {
+            userDao.update({"avatarImageURL" : fullFilePath}, ID_FIELD_NAME, userID).then(function (result) {
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                 responseObj.results = uploadResponseDTO;
                 res.send(responseObj);
@@ -618,7 +618,7 @@ function updateCover(req, res) {
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 
-            userDao.update({"coverImageURL" : fullFilePath}, "userID", userID).then(function (result) {
+            userDao.update({"coverImageURL" : fullFilePath}, ID_FIELD_NAME, userID).then(function (result) {
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                 responseObj.results = uploadResponseDTO;
                 res.send(responseObj);

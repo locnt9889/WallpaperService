@@ -49,6 +49,10 @@ app.use('/api/file', fileCtrl);
 var userCtrl = require("./appcommon/controllers/UserCtrl");
 app.use('/api/user', userCtrl);
 
+//user contact controller for api
+var userContactCtrl = require("./appcommon/controllers/UserContactCtrl");
+app.use('/api/userContact', userContactCtrl);
+
 /*
  * END set config mapping url
  */

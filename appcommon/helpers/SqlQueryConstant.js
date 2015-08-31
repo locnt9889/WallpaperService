@@ -34,10 +34,18 @@ var USER_SQL_SCRIPT = {
     SQL_COUNT_NUMBER_SEARCH_USER : "SELECT COUNT(userID) as totalItems FROM User WHERE fullName LIKE ? OR email LIKE ?"
 }
 
+var USER_CONTACT_SQL_SCRIPT = {
+    SLQ_ADD_NEW_MULTI : "INSERT INTO User_Contacts (id, userID, friendID, statusID, createdDate, modifiedDate) VALUES ?",
+    USER_CONTACT_STATUS_SCRIPT : {
+        GET_USER_STATUS_ID_BY_VALUE : "SELECT statusID FROM User_Contact_Status WHERE statusValue = ?"
+    }
+}
+
 /*Exports*/
 
 module.exports = {
     GENERIC_SQL : GENERIC_SQL,
     ACCESS_TOKEN_MODULE : ACCESS_TOKEN_MODULE,
-    USER_SQL_SCRIPT : USER_SQL_SCRIPT
+    USER_SQL_SCRIPT : USER_SQL_SCRIPT,
+    USER_CONTACT_SQL_SCRIPT : USER_CONTACT_SQL_SCRIPT
 }

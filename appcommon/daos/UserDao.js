@@ -8,7 +8,7 @@ var SqlQueryConstant = require("../helpers/SqlQueryConstant");
 
 var MysqlHelper = new require("../helpers/MysqlHelper");
 var Constant = require("../helpers/Constant");
-var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER);
+var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
 

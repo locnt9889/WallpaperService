@@ -90,6 +90,13 @@ var UPLOAD_FILE = {
     }
 }
 
+var USER_CONTACT = {
+    ERROR_USER_NOT_FOUND : {
+        code: 1401,
+        message: "User is not existed!"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
@@ -98,6 +105,7 @@ module.exports = {
     USER_REGISTER : USER_REGISTER,
     USER_LOGIN : USER_LOGIN,
     USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD,
-    UPLOAD_FILE : UPLOAD_FILE
+    UPLOAD_FILE : UPLOAD_FILE,
+    USER_CONTACT : USER_CONTACT
 
 }
