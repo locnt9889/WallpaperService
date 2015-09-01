@@ -9,7 +9,7 @@ var multiparty = require('multiparty');
 //var MysqlHelperModule = require("../helpers/MysqlHelper");
 var userContactDao = require("../daos/UserContactDao");
 var userContactStatusDao = require("../daos/UserContactStatusDao");
-var userDao = require("../daos/userDao");
+var userDao = require("../daos/UserDao");
 
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var UserContact = require("../models/UserContact");
