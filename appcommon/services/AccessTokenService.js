@@ -9,7 +9,10 @@ var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 
 var checkAccessToken = function(req, res, next){
-    var accessToken = req.body.accessToken || req.query.accessToken;
+    var accessToken = req.body.accessToken;
+    if(accessToken == undefined){
+        accessToken = req.query.accessToken;
+    }
     var responseObj = new ResponseServerDto();
 
     if(checkValidateUtil.isEmptyFeild(accessToken)){
