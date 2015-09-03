@@ -12,4 +12,14 @@ var accessTokenService = require("../services/AccessTokenService");
 router.post('/requestAddFriend', [accessTokenService.checkAccessToken, function(req, res, next) {
     userContactService.requestAddFriend(req, res);
 }]);
+
+/* POST */
+router.post('/acceptFriend', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userContactService.acceptFriend(req, res);
+}]);
+
+/* POST */
+router.post('/findContactByUser', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userContactService.findUserContactByUser(req, res);
+}]);
 module.exports = router;

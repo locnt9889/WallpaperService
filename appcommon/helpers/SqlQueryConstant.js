@@ -38,7 +38,13 @@ var USER_CONTACT_SQL_SCRIPT = {
     SLQ_ADD_NEW_MULTI : "INSERT INTO User_Contacts (id, userID, friendID, statusID, createdDate, modifiedDate) VALUES ?",
     USER_CONTACT_STATUS_SCRIPT : {
         GET_USER_STATUS_ID_BY_VALUE : "SELECT statusID FROM User_Contact_Status WHERE statusValue = ?"
-    }
+    },
+    SLQ_FIND_BY_USER_AND_FRIEND : "SELECT uc.*, ucs.statusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID WHERE uc.userID = ? AND uc.friendID",
+    SLQ_UPDATE_STATUS_TO_FRIEND : "UPDATE User_Contacts SET statusID = ? WHERE (userID = ? AND friendID = ?) OR (userID = ? AND friendID = ?)",
+    SLQ_UPDATE_STATUS : "UPDATE User_Contacts SET statusID = ? WHERE userID = ? AND friendID = ?",
+    SLQ_USER_CONTACT_BY_USER_EXT : "AND ucs.statusValue = ",
+    SLQ_COUNT_USER_CONTACT_BY_USER : "SELECT COUNT(id) as totalItems FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID WHERE uc.userID = ? #ext",
+    SLQ_FIND_USER_CONTACT_BY_USER_PAGING : "SELECT u.*, ucs.statusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ? #ext LIMIT ?, ?"
 }
 
 /*Exports*/

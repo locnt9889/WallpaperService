@@ -94,6 +94,22 @@ var USER_CONTACT = {
     ERROR_USER_NOT_FOUND : {
         code: 1401,
         message: "User is not existed!"
+    },
+    ERROR_HAVE_NO_REQUEST_FRIEND : {
+        code: 1402,
+        message: "User don't have request add friend!"
+    },
+    ERROR_ADD_WHEN_ACCEPTED_FRIEND : {
+        code: 1403,
+        message: "Can't add a friend!"
+    },
+    ERROR_ACCEPT_FRIEND_KEY_EMPTY : {
+        code: 1404,
+        message: "Key is require field!"
+    },
+    ERROR_ACCEPT_FRIEND_KEY_INVALID : {
+        code: 1405,
+        message: "Key is invalid!"
     }
 }
 
