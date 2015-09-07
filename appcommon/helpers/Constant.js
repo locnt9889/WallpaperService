@@ -16,6 +16,10 @@ var TABLE_NAME_DB = {
         NAME : "User_Contact_Status",
         NAME_FIELD_ID : "statusID"
     },
+    NOTIFICATION : {
+        NAME : "Notification",
+        NAME_FIELD_ID : "id"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -79,6 +83,10 @@ var USER_STATUS_VALUE = {
     ACTIVE : "ACTIVE"
 }
 
+var NOTIFICATION_TYPE = {
+    USER_CONTACT : "USER_CONTACT"
+}
+
 var USER_FB_AVATAR_LINK = "https://graph.facebook.com/#fbID/picture?type=large";
 
 var USER_CONTACT_STATUS_VALUE = {
@@ -95,7 +103,8 @@ var USER_CONTACT_STATUS_VALUE = {
 var USER_CONTACT_PARAM_KEY = {
     ACCEPT : "ACCEPT",
     BLOCK : "BLOCK",
-    DENY : "DENY"
+    DENY : "DENY",
+    REMOVE : "REMOVE"
 }
 
 /*Exports*/
@@ -106,5 +115,6 @@ module.exports = {
     USER_STATUS_VALUE : USER_STATUS_VALUE,
     USER_FB_AVATAR_LINK : USER_FB_AVATAR_LINK,
     USER_CONTACT_STATUS_VALUE : USER_CONTACT_STATUS_VALUE,
-    USER_CONTACT_PARAM_KEY : USER_CONTACT_PARAM_KEY
+    USER_CONTACT_PARAM_KEY : USER_CONTACT_PARAM_KEY,
+    NOTIFICATION_TYPE : NOTIFICATION_TYPE
 }

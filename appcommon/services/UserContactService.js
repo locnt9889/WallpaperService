@@ -10,12 +10,16 @@ var multiparty = require('multiparty');
 var userContactDao = require("../daos/UserContactDao");
 var userContactStatusDao = require("../daos/UserContactStatusDao");
 var userDao = require("../daos/UserDao");
+var notificationDao = require("../daos/NotificationDao");
 
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var UserContact = require("../models/UserContact");
+var Notification = require("../models/Notification");
 
 var Constant = require("../helpers/Constant");
 var message = require("../message/en");
+var messageNotification = require("../message/notification_en");
+
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
@@ -117,7 +121,7 @@ var acceptFriend = function(req, res){
             return;
         }
 
-        if(key != Constant.USER_CONTACT_PARAM_KEY.ACCEPT && key != Constant.USER_CONTACT_PARAM_KEY.BLOCK && key != Constant.USER_CONTACT_PARAM_KEY.DENY){
+        if(key != Constant.USER_CONTACT_PARAM_KEY.ACCEPT && key != Constant.USER_CONTACT_PARAM_KEY.REMOVE && key != Constant.USER_CONTACT_PARAM_KEY.DENY){
             responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
             responseObj.errorsObject = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
             responseObj.errorsMessage = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID.message;
@@ -135,13 +139,16 @@ var acceptFriend = function(req, res){
                 res.send(responseObj);
             }else{
                 var status = userContacts[0].statusValue;
-                if(Constant.USER_CONTACT_STATUS_VALUE.WATTING_FOR_ACCEPT_REQUEST != status){
-                    responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND;
-                    responseObj.errorsObject = message.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND;
-                    responseObj.errorsMessage = message.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND.message;
-                    res.send(responseObj);
-                }else {
-                    if(key == Constant.USER_CONTACT_PARAM_KEY.ACCEPT) {
+
+                //key == access
+                if(key == Constant.USER_CONTACT_PARAM_KEY.ACCEPT) {
+                    if(Constant.USER_CONTACT_STATUS_VALUE.WATTING_FOR_ACCEPT_REQUEST != status){
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND;
+                        responseObj.errorsObject = message.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND;
+                        responseObj.errorsMessage = message.USER_CONTACT.ERROR_HAVE_NO_REQUEST_FRIEND.message;
+                        res.send(responseObj);
+                    }else {
+
                         userContactStatusDao.getUserContactStatusByValue(Constant.USER_CONTACT_STATUS_VALUE.FRIEND).then(function (status) {
                             var statusID = 0;
                             if (status.length > 0) {
@@ -151,6 +158,9 @@ var acceptFriend = function(req, res){
                                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                                 responseObj.results = result;
                                 res.send(responseObj);
+
+                                //add notification
+                                serviceUtil.addNotificationForUserContact(userID, friendID, key);
                             }, function (err) {
                                 responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
                                 responseObj.errorsObject = err;
@@ -163,68 +173,28 @@ var acceptFriend = function(req, res){
                             responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                             res.send(responseObj);
                         });
-                    } else{
-                        userContactStatusDao.findAll().then(function (status) {
-                            var denyID = 0;
-                            var deniedID = 0;
-                            var blockID = 0;
-                            var blockedID = 0;
+                    }
+                } else {
 
-                            for (i = 0; i < status.length; i++) {
-                                if (status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.DENY_MAKE_FRIEND_REQUEST) {
-                                    denyID = status[i].statusID;
-                                } else if (status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.DENIED_MAKE_FRIEND_REQUEST) {
-                                    deniedID = status[i].statusID;
-                                } else if (status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.BLOCK_USER_CONTACT) {
-                                    blockID = status[i].statusID;
-                                } else if (status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.BLOCKED_BY_USER) {
-                                    blockedID = status[i].statusID;
-                                }
-                            }
+                    if (key == Constant.USER_CONTACT_PARAM_KEY.DENY || key == Constant.USER_CONTACT_PARAM_KEY.REMOVE) {
+                        userContactDao.deleteToFriendFor2(userID, friendID).then(function (result) {
+                            console.log("success delete");
 
-                            if (key == Constant.USER_CONTACT_PARAM_KEY.DENY){
-                                userContactDao.updateStatus(denyID, userID, friendID).then(function (result) {
-                                    console.log("success deny");
-                                    userContactDao.updateStatus(deniedID, friendID, userID).then(function (result) {
-                                        console.log("success denied");
-                                    }, function (err) {
-                                        console.log("error denied");
-                                    });
-                                }, function (err) {
-                                    console.log("error deny");
-                                });
-
-                                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                                responseObj.results = {};
-                                res.send(responseObj);
-                            } else if(key == Constant.USER_CONTACT_PARAM_KEY.BLOCK){
-                                userContactDao.updateStatus(blockID, userID, friendID).then(function (result) {
-                                    console.log("success block");
-                                    userContactDao.updateStatus(blockedID, friendID, userID).then(function (result) {
-                                        console.log("success blocked");
-                                    }, function (err) {
-                                        console.log("error blocked");
-                                    });
-                                }, function (err) {
-                                    console.log("error block");
-                                });
-
-                                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                                responseObj.results = {};
-                                res.send(responseObj);
-                            } else{
-                                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
-                                responseObj.errorsObject = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
-                                responseObj.errorsMessage = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID.message;
-                                res.send(responseObj);
-                                return;
-                            }
-                        }, function (err) {
-                            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                            responseObj.errorsObject = err;
-                            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                            responseObj.results = {};
                             res.send(responseObj);
+
+                            serviceUtil.addNotificationForUserContact(userID, friendID, key);
+                        }, function (err) {
+                            console.log("error delete");
                         });
+
+                    } else {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
+                        responseObj.errorsObject = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID;
+                        responseObj.errorsMessage = message.USER_CONTACT.ERROR_ACCEPT_FRIEND_KEY_INVALID.message;
+                        res.send(responseObj);
+                        return;
                     }
                 }
             }

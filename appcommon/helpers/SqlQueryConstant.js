@@ -41,6 +41,7 @@ var USER_CONTACT_SQL_SCRIPT = {
     },
     SLQ_FIND_BY_USER_AND_FRIEND : "SELECT uc.*, ucs.statusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID WHERE uc.userID = ? AND uc.friendID",
     SLQ_UPDATE_STATUS_TO_FRIEND : "UPDATE User_Contacts SET statusID = ? WHERE (userID = ? AND friendID = ?) OR (userID = ? AND friendID = ?)",
+    SLQ_DELETE_CONTACT : "DELETE FROM User_Contacts WHERE (userID = ? AND friendID = ?) OR (userID = ? AND friendID = ?)",
     SLQ_UPDATE_STATUS : "UPDATE User_Contacts SET statusID = ? WHERE userID = ? AND friendID = ?",
     SLQ_USER_CONTACT_BY_USER_EXT : "AND ucs.statusValue = ",
     SLQ_COUNT_USER_CONTACT_BY_USER : "SELECT COUNT(id) as totalItems FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID WHERE uc.userID = ? #ext",

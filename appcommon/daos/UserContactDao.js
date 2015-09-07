@@ -35,6 +35,12 @@ MysqlHelper.prototype.updateStatusToFriendFor2 = function(statusID, userID, frie
     return userContactDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.deleteToFriendFor2 = function(userID, friendID){
+    var sql = SqlQueryConstant.USER_CONTACT_SQL_SCRIPT.SLQ_DELETE_CONTACT;
+    var params = [userID, friendID, friendID, userID];
+    return userContactDao.queryExecute(sql, params);
+};
+
 MysqlHelper.prototype.updateStatus= function(statusID, userID, friendID){
     var sql = SqlQueryConstant.USER_CONTACT_SQL_SCRIPT.SLQ_UPDATE_STATUS;
     var params = [statusID, userID, friendID];
