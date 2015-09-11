@@ -48,46 +48,58 @@ var requestAddFriend = function(req, res){
                 responseObj.errorsMessage = message.USER_CONTACT.ERROR_USER_NOT_FOUND.message;
                 res.send(responseObj);
             }else{
+                userContactDao.findByUserAndFriend(userID, friendID).then(function(userContacts){
+                    if(userContacts.length > 0){
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.USER_CONTACT.ERROR_REQUEST_FRIENDED;
+                        responseObj.errorsObject = message.USER_CONTACT.ERROR_REQUEST_FRIENDED;
+                        responseObj.errorsMessage = message.USER_CONTACT.ERROR_REQUEST_FRIENDED.message;
+                        res.send(responseObj);
+                    }else{
+                        //add user contact for from user
+                        var userContactFrom = new UserContact();
+                        userContactFrom.userID = userID;
+                        userContactFrom.friendID = friendID;
 
-                //add user contact for from user
-                var userContactFrom = new UserContact();
-                userContactFrom.userID = userID;
-                userContactFrom.friendID = friendID;
+                        //add user contact for to user
+                        var userContactTo = new UserContact();
+                        userContactTo.userID = friendID;
+                        userContactTo.friendID = userID;
 
-                //add user contact for to user
-                var userContactTo = new UserContact();
-                userContactTo.userID = friendID;
-                userContactTo.friendID = userID;
+                        userContactStatusDao.findAll().then(function (status) {
+                            for(i = 0 ; i < status.length; i++){
+                                if(status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.REQUEST_MAKE_FRIEND){
+                                    userContactFrom.statusID = status[i].statusID;
+                                }else if(status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.WATTING_FOR_ACCEPT_REQUEST){
+                                    userContactTo.statusID = status[i].statusID;
+                                }
+                            }
 
-                userContactStatusDao.findAll().then(function (status) {
-                    for(i = 0 ; i < status.length; i++){
-                        if(status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.REQUEST_MAKE_FRIEND){
-                            userContactFrom.statusID = status[i].statusID;
-                        }else if(status[i].statusValue == Constant.USER_CONTACT_STATUS_VALUE.WATTING_FOR_ACCEPT_REQUEST){
-                            userContactTo.statusID = status[i].statusID;
-                        }
+                            var userContactFromArray = [userContactFrom.id, userContactFrom.userID, userContactFrom.friendID, userContactFrom.statusID, userContactFrom.createdDate, userContactFrom.modifiedDate];
+                            var userContactToArray = [userContactTo.id, userContactTo.userID, userContactTo.friendID, userContactTo.statusID, userContactTo.createdDate, userContactTo.modifiedDate];
+
+                            userContactDao.addMultiContact([userContactFromArray, userContactToArray]).then(function (result) {
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                                responseObj.results = result;
+                                res.send(responseObj);
+                            }, function (err) {
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                                responseObj.errorsObject = err;
+                                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                                res.send(responseObj);
+                            });
+                        }, function (err) {
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                            responseObj.errorsObject = err;
+                            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                            res.send(responseObj);
+                        });
                     }
-
-                    var userContactFromArray = [userContactFrom.id, userContactFrom.userID, userContactFrom.friendID, userContactFrom.statusID, userContactFrom.createdDate, userContactFrom.modifiedDate];
-                    var userContactToArray = [userContactTo.id, userContactTo.userID, userContactTo.friendID, userContactTo.statusID, userContactTo.createdDate, userContactTo.modifiedDate];
-
-                    userContactDao.addMultiContact([userContactFromArray, userContactToArray]).then(function (result) {
-                        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                        responseObj.results = result;
-                        res.send(responseObj);
-                    }, function (err) {
-                        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                        responseObj.errorsObject = err;
-                        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-                        res.send(responseObj);
-                    });
-                }, function (err) {
+                }, function(err){
                     responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
                     responseObj.errorsObject = err;
                     responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                     res.send(responseObj);
                 });
-
             }
         }, function(err){
             responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;

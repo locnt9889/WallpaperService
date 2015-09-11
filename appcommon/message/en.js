@@ -110,6 +110,10 @@ var USER_CONTACT = {
     ERROR_ACCEPT_FRIEND_KEY_INVALID : {
         code: 1405,
         message: "Key is invalid!"
+    },
+    ERROR_REQUEST_FRIENDED : {
+        code: 1406,
+        message: "Contact existed!"
     }
 }
 
