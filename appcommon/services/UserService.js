@@ -655,7 +655,7 @@ var searchUser = function(req, res){
         var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
         var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
 
-        userDao.searchUser(searchText, pageNum, perPage).then(function(data){
+        userDao.searchUser(userID, searchText, pageNum, perPage).then(function(data){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = data;
             res.send(responseObj);

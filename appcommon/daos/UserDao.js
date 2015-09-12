@@ -52,14 +52,14 @@ MysqlHelper.prototype.getUserProfileById = function(userID){
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.searchUser = function(searchText, pageNum, perPage){
+MysqlHelper.prototype.searchUser = function(userID, searchText, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);
     var text = "%" + searchText + "%";
 
     var sqlCount = SqlQueryConstant.USER_SQL_SCRIPT.SQL_COUNT_NUMBER_SEARCH_USER;
-    var paramCount = [text, text];
+    var paramCount = [userID, text, text];
     userDao.queryExecute(sqlCount, paramCount).then(function(data){
         var responsePagingDto = new ResponsePagingDto();
         var totalItems = data[0].totalItems;
@@ -74,7 +74,7 @@ MysqlHelper.prototype.searchUser = function(searchText, pageNum, perPage){
         responsePagingDto.totalPages = totalPages;
 
         var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_SEARCH_USER;
-        var params = [text, text, start, perPage];
+        var params = [userID, userID, text, text, start, perPage];
         userDao.queryExecute(sql, params).then(function(data1){
             responsePagingDto.items = data1;
 
