@@ -639,6 +639,7 @@ function updateCover(req, res) {
     });
 }
 
+//searchUser
 var searchUser = function(req, res){
     var responseObj = new ResponseServerDto();
     var accessTokenObj = req.accessTokenObj;
