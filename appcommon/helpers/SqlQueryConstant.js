@@ -30,7 +30,7 @@ var USER_SQL_SCRIPT = {
 
     SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?",
     
-    SQL_SEARCH_USER : "SELECT us.userID, us.email, us.iShowEmail, us.fullName, us.dateOfBirth, us.gender, us.phoneNumber, us.isShowPhoneNumber, us.avatarImageURL, us.coverImageURL, us.isFacebookAccount, ucf.friendStatusID, ucf.friendStatusValue FROM User us LEFT JOIN (SELECT uc.friendID, ucs.statusID friendStatusID, ucs.statusValue as friendStatusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ?) ucf ON us.userID = ucf.friendID WHERE isActive=1 AND us.userID != ? AND ( fullName LIKE ? OR email LIKE ? ) LIMIT ?, ?",
+    SQL_SEARCH_USER : "SELECT us.userID, us.email, us.iShowEmail, us.fullName, us.dateOfBirth, us.gender, us.phoneNumber, us.isShowPhoneNumber, us.avatarImageURL, us.coverImageURL, us.isFacebookAccount, IFNULL(ucf.friendStatusID, 0) as friendStatusID, IFNULL(ucf.friendStatusValue, '') as friendStatusValue FROM User us LEFT JOIN (SELECT uc.friendID, ucs.statusID friendStatusID, ucs.statusValue as friendStatusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ?) ucf ON us.userID = ucf.friendID WHERE isActive=1 AND us.userID != ? AND ( fullName LIKE ? OR email LIKE ? ) LIMIT ?, ?",
     SQL_COUNT_NUMBER_SEARCH_USER : "SELECT COUNT(userID) as totalItems FROM User WHERE userID != ? AND (fullName LIKE ? OR email LIKE ?)"
 }
 
@@ -45,7 +45,7 @@ var USER_CONTACT_SQL_SCRIPT = {
     SLQ_UPDATE_STATUS : "UPDATE User_Contacts SET statusID = ? WHERE userID = ? AND friendID = ?",
     SLQ_USER_CONTACT_BY_USER_EXT : "AND ucs.statusValue = ",
     SLQ_COUNT_USER_CONTACT_BY_USER : "SELECT COUNT(id) as totalItems FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID WHERE uc.userID = ? #ext",
-    SLQ_FIND_USER_CONTACT_BY_USER_PAGING : "SELECT u.*, ucs.statusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ? #ext LIMIT ?, ?"
+    SLQ_FIND_USER_CONTACT_BY_USER_PAGING : "SELECT u.*, ucs.statusValue as friendStatusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ? #ext LIMIT ?, ?"
 }
 
 /*Exports*/
