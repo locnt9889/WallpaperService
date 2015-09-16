@@ -20,6 +20,20 @@ var TABLE_NAME_DB = {
         NAME : "Notification",
         NAME_FIELD_ID : "id"
     },
+    PROVINCE : {
+        NAME : "Data_Province",
+        NAME_FIELD_ID : "province_id"
+    },
+    DISTRICT : {
+        NAME : "Data_District",
+        NAME_FIELD_ID : "district_id",
+        NAME_FIELD_PROVINCE_ID : "province_id"
+    },
+    WARD : {
+        NAME : "Data_Ward",
+        NAME_FIELD_ID : "ward_id",
+        NAME_FIELD_DISTRICT_ID : "district_id"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }

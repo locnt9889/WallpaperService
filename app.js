@@ -53,6 +53,10 @@ app.use('/api/user', userCtrl);
 var userContactCtrl = require("./appcommon/controllers/UserContactCtrl");
 app.use('/api/userContact', userContactCtrl);
 
+//location controller for api
+var locationCtrl = require("./appcommon/controllers/LocationCtrl");
+app.use('/api/location', locationCtrl);
+
 /*
  * END set config mapping url
  */

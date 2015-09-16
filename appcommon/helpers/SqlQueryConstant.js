@@ -6,6 +6,7 @@ var GENERIC_SQL = {
     SLQ_FINDALL : "SELECT * FROM ??",
     SLQ_FINDALL_ACTIVE : "SELECT * FROM ?? WHERE active = 1",
     SLQ_FINDONE_BY_ID : "SELECT * FROM ?? WHERE ?? = ?",
+    SLQ_FINDALL_BY_FIELD : "SELECT * FROM ?? WHERE ?? = ?",
     SLQ_ADD_NEW : "INSERT INTO ?? SET ?",
     SLQ_UPDATE : "UPDATE ?? SET ? WHERE ?? = ?",
     SLQ_DO_INACTIVE : "UPDATE ?? SET active = 0 WHERE ?? = ?",
