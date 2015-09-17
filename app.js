@@ -57,6 +57,10 @@ app.use('/api/userContact', userContactCtrl);
 var locationCtrl = require("./appcommon/controllers/LocationCtrl");
 app.use('/api/location', locationCtrl);
 
+//shoptype controller for api
+var shopTypeCtrl = require("./appcommon/controllers/ShopTypeCtrl");
+app.use('/api/shop-type', shopTypeCtrl);
+
 /*
  * END set config mapping url
  */

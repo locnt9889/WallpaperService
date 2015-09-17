@@ -34,6 +34,15 @@ var TABLE_NAME_DB = {
         NAME_FIELD_ID : "ward_id",
         NAME_FIELD_DISTRICT_ID : "district_id"
     },
+    SHOP_TYPE_CHILD : {
+        NAME : "Data_List_Shop_Type_Child",
+        NAME_FIELD_ID : "shopTypeChildID",
+        NAME_FIELD_PARENT_ID : "shopTypeParentID"
+    },
+    SHOP_TYPE_PARENT : {
+        NAME : "Data_List_Shop_Type_Parent",
+        NAME_FIELD_ID : "shopTypeParentID"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
