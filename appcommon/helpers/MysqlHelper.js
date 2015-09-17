@@ -263,6 +263,33 @@ var findAllByField = function(fieldName ,fieldValue) {
     return deferred.promise;
 };
 
+/**
+ * find all by field with active ===== isActive
+ * @param fieldName : fieldName
+ * @param : fieldValue - fieldValue
+ */
+var findAllByFieldWithActive = function(fieldName ,fieldValue) {
+    var deferred = Q.defer();
+    var sql = SqlQueryConstant.GENERIC_SQL.SLQ_FINDALL_BY_FIELD_ACTIVE;
+    var params = [this.tableName, fieldName, fieldValue];
+    pool.getConnection(function(err,connection){
+        if (err) {
+            connection.release();
+            deferred.reject(err);
+        }else{
+            connection.query(sql, params, function(err,rows){
+                connection.release();
+                if(err) {
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(rows);
+                }
+            });
+        }
+    });
+    return deferred.promise;
+};
+
 /*Export*/
 MysqlHelper.prototype.queryExecute = queryExecute;
 MysqlHelper.prototype.findAll = findAll;
@@ -274,4 +301,5 @@ MysqlHelper.prototype.update = update;
 MysqlHelper.prototype.inactivate = inactivate;
 MysqlHelper.prototype.remove = remove;
 MysqlHelper.prototype.findAllByField = findAllByField;
+MysqlHelper.prototype.findAllByFieldWithActive = findAllByFieldWithActive;
 module.exports = MysqlHelper;

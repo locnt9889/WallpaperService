@@ -24,7 +24,7 @@ var getAllShopTypeParent = function(req, res){
         responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
         res.send(responseObj);
     }else{
-        shopTypeParentDao.findAll().then(function(data){
+        shopTypeParentDao.findAllActive().then(function(data){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = data;
             res.send(responseObj);
@@ -49,7 +49,7 @@ var getAllShopTypeChildByParent = function(req, res){
     }else{
         var parent_id = isNaN(req.body.parent_id)? 0 : parseInt(req.body.parent_id);
 
-        shopTypeChildDao.findAllByField(Constant.TABLE_NAME_DB.SHOP_TYPE_CHILD.NAME_FIELD_PARENT_ID, parent_id).then(function(data){
+        shopTypeChildDao.findAllByFieldWithActive(Constant.TABLE_NAME_DB.SHOP_TYPE_CHILD.NAME_FIELD_PARENT_ID, parent_id).then(function(data){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = data;
             res.send(responseObj);
