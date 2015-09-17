@@ -93,9 +93,49 @@ var getAllWardByDistrict = function(req, res){
     }
 };
 
+var getLocationData = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    var locationData = {
+        provinces : [],
+        districts : []
+    }
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        //var district_id = isNaN(req.body.district_id)? 0 : parseInt(req.body.district_id);
+
+        provinceDao.findAll().then(function(dataPro){
+            locationData.provinces = dataPro;
+            districtDao.findAll().then(function(data){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                locationData.districts = data;
+                responseObj.results = locationData;
+                res.send(responseObj);
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 /*Exports*/
 module.exports = {
     getAllProvince : getAllProvince,
     getAllDistrictByProvince : getAllDistrictByProvince,
-    getAllWardByDistrict : getAllWardByDistrict
+    getAllWardByDistrict : getAllWardByDistrict,
+    getLocationData : getLocationData
 }

@@ -23,4 +23,9 @@ router.post('/getAllWardByDistrict', [accessTokenService.checkAccessToken, funct
     locationService.getAllWardByDistrict(req, res);
 }]);
 
+/* POST */
+router.post('/getLocationData', [accessTokenService.checkAccessToken, function(req, res, next) {
+    locationService.getLocationData(req, res);
+}]);
+
 module.exports = router;
