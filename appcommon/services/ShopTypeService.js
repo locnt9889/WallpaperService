@@ -62,8 +62,46 @@ var getAllShopTypeChildByParent = function(req, res){
     }
 };
 
+var getAllShopTypeData = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+    var shopType = {
+        parents : [],
+        childrent : []
+    }
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        shopTypeParentDao.findAllActive().then(function(dataParent){
+            shopType.parents = dataParent;
+
+            shopTypeChildDao.findAllActive().then(function(data){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                shopType.childrent = data;
+                responseObj.results = shopType;
+                res.send(responseObj);
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 /*Exports*/
 module.exports = {
     getAllShopTypeParent : getAllShopTypeParent,
-    getAllShopTypeChildByParent : getAllShopTypeChildByParent
+    getAllShopTypeChildByParent : getAllShopTypeChildByParent,
+    getAllShopTypeData : getAllShopTypeData
 }

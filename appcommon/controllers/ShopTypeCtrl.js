@@ -18,4 +18,9 @@ router.post('/getAllShopTypeChildByParent', [accessTokenService.checkAccessToken
     shopTypeService.getAllShopTypeChildByParent(req, res);
 }]);
 
+/* POST */
+router.post('/getAllShopTypeData', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopTypeService.getAllShopTypeData(req, res);
+}]);
+
 module.exports = router;
