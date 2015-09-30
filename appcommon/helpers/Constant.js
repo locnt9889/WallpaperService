@@ -43,6 +43,10 @@ var TABLE_NAME_DB = {
         NAME : "Data_List_Shop_Type_Parent",
         NAME_FIELD_ID : "shopTypeParentID"
     },
+    SHOP : {
+        NAME : "Shop",
+        NAME_FIELD_ID : "shopID"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -98,6 +102,10 @@ var CODE_STATUS = {
         ERROR_ACCEPT_FRIEND_KEY_EMPTY : 1404,
         ERROR_ACCEPT_FRIEND_KEY_INVALID : 1405,
         ERROR_REQUEST_FRIENDED : 1406
+    },
+    SHOP : {
+        CREATE_SHOP_EMPTY_FIELD: 1501,
+        CREATE_SHOP_NAME_OF_USER_EXIST : 1502
     }
 }
 
@@ -131,6 +139,11 @@ var USER_CONTACT_PARAM_KEY = {
     REMOVE : "REMOVE"
 }
 
+var SHOP_STATUS_VALUE = {
+    ACTIVE : "ACTIVE",
+    BLOCK : "BLOCK"
+}
+
 /*Exports*/
 module.exports = {
     UPLOAD_FILE_CONFIG : UPLOAD_FILE_CONFIG,
@@ -140,5 +153,7 @@ module.exports = {
     USER_FB_AVATAR_LINK : USER_FB_AVATAR_LINK,
     USER_CONTACT_STATUS_VALUE : USER_CONTACT_STATUS_VALUE,
     USER_CONTACT_PARAM_KEY : USER_CONTACT_PARAM_KEY,
-    NOTIFICATION_TYPE : NOTIFICATION_TYPE
+    NOTIFICATION_TYPE : NOTIFICATION_TYPE,
+    SHOP_STATUS_VALUE : SHOP_STATUS_VALUE
+
 }

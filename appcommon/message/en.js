@@ -117,6 +117,17 @@ var USER_CONTACT = {
     }
 }
 
+var SHOP = {
+    CREATE_SHOP_EMPTY_FIELD: {
+        code: 1501,
+        message: "Error empty with parameter required!"
+    },
+    CREATE_SHOP_NAME_OF_USER_EXIST : {
+        code: 1502,
+        message: "Error create shop name was existed!"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
@@ -126,6 +137,6 @@ module.exports = {
     USER_LOGIN : USER_LOGIN,
     USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD,
     UPLOAD_FILE : UPLOAD_FILE,
-    USER_CONTACT : USER_CONTACT
-
+    USER_CONTACT : USER_CONTACT,
+    SHOP : SHOP
 }

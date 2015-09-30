@@ -50,11 +50,21 @@ var USER_CONTACT_SQL_SCRIPT = {
     SLQ_FIND_USER_CONTACT_BY_USER_PAGING : "SELECT u.*, ucs.statusValue as friendStatusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ? #ext LIMIT ?, ?"
 }
 
+var SHOP_SQL_SCRIPT = {
+    CHECK_SHOP_NAME_OF_USER_EXIST : "SELECT * FROM Shop WHERE userID = ? AND shopName = ?",
+    SHOP_STATUS_SCRIPT : {
+        GET_SHOP_STATUS_ID_BY_VALUE : "SELECT * FROM Shop_Status WHERE shopStatusValue = ?"
+    },
+    SLQ_ADD_NEW_MULTI_SHOP_TYPE : "INSERT INTO Shop_Type (id, shopID, shopTypeChildID, createdDate) VALUES ?",
+    SLQ_ADD_NEW_MULTI_DISTRICT : "INSERT INTO Shop_District (id, shopID, districtID, createdDate) VALUES ?"
+}
+
 /*Exports*/
 
 module.exports = {
     GENERIC_SQL : GENERIC_SQL,
     ACCESS_TOKEN_MODULE : ACCESS_TOKEN_MODULE,
     USER_SQL_SCRIPT : USER_SQL_SCRIPT,
-    USER_CONTACT_SQL_SCRIPT : USER_CONTACT_SQL_SCRIPT
+    USER_CONTACT_SQL_SCRIPT : USER_CONTACT_SQL_SCRIPT,
+    SHOP_SQL_SCRIPT : SHOP_SQL_SCRIPT
 }

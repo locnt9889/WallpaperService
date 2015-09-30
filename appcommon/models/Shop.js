@@ -7,7 +7,7 @@ function Shop(){
     this.userID = 0;
     this.shopName = "";
     this.shopDesc = "";
-    this.shopStatus =  0;
+    this.shopStatusID =  0;
     this.avatarImageURL = "";
     this.coverImageURL =  "";
     this.phoneNumber = "";
