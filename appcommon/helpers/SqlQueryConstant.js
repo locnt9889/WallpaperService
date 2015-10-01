@@ -56,7 +56,10 @@ var SHOP_SQL_SCRIPT = {
         GET_SHOP_STATUS_ID_BY_VALUE : "SELECT * FROM Shop_Status WHERE shopStatusValue = ?"
     },
     SLQ_ADD_NEW_MULTI_SHOP_TYPE : "INSERT INTO Shop_Type (id, shopID, shopTypeChildID, createdDate) VALUES ?",
-    SLQ_ADD_NEW_MULTI_DISTRICT : "INSERT INTO Shop_District (id, shopID, districtID, createdDate) VALUES ?"
+    SLQ_ADD_NEW_MULTI_DISTRICT : "INSERT INTO Shop_District (id, shopID, districtID, createdDate) VALUES ?",
+    GET_SHOP_BY_USER : "SELECT * FROM Shop WHERE userID = ? AND isActive = 1",
+    GET_SHOP_TYPE_BY_SHOP : "SELECT * FROM Shop_Type WHERE shopID = ?",
+    GET_SHOP_DISTRICT_BY_SHOP : "SELECT * FROM Shop_District WHERE shopID = ?",
 }
 
 /*Exports*/

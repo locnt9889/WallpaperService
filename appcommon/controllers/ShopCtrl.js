@@ -13,4 +13,19 @@ router.post('/create', [accessTokenService.checkAccessToken, function(req, res, 
     shopService.createShop(req, res);
 }]);
 
+/* POST create shop */
+router.post('/getShopByUser', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.getShopByUser(req, res);
+}]);
+
+/* POST create shop */
+router.post('/getShopTypeByShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.getShopTypeByShop(req, res);
+}]);
+
+/* POST create shop */
+router.post('/getShopDistrictByShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.getShopDistrictByShop(req, res);
+}]);
+
 module.exports = router;

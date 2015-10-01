@@ -33,5 +33,23 @@ MysqlHelper.prototype.addMultiShopDistrict = function(array){
     return shopDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.getShopByUser = function(userID){
+    var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.GET_SHOP_BY_USER;
+    var params = [userID];
+    return shopDao.queryExecute(sql, params);
+};
+
+MysqlHelper.prototype.getShopTypeByShop = function(shopID){
+    var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.GET_SHOP_TYPE_BY_SHOP;
+    var params = [shopID];
+    return shopDao.queryExecute(sql, params);
+};
+
+MysqlHelper.prototype.getShopDistrictByShop = function(shopID){
+    var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.GET_SHOP_DISTRICT_BY_SHOP;
+    var params = [shopID];
+    return shopDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = shopDao;
