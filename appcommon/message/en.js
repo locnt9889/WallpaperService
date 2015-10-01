@@ -125,6 +125,14 @@ var SHOP = {
     CREATE_SHOP_NAME_OF_USER_EXIST : {
         code: 1502,
         message: "Error create shop name was existed!"
+    },
+    SHOP_INVALID : {
+        code: 1503,
+        message: "Shop is invalid"
+    },
+    SHOP_ACTION_INVALID : {
+        code: 1504,
+        message: "Action for Shop is invalid"
     }
 }
 

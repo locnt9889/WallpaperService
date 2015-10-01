@@ -47,6 +47,14 @@ var TABLE_NAME_DB = {
         NAME : "Shop",
         NAME_FIELD_ID : "shopID"
     },
+    SHOP_TYPE : {
+        NAME : "Shop_Type",
+        NAME_FIELD_ID : "id"
+    },
+    SHOP_DISTRICT : {
+        NAME : "Shop_District",
+        NAME_FIELD_ID : "id"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -105,7 +113,9 @@ var CODE_STATUS = {
     },
     SHOP : {
         CREATE_SHOP_EMPTY_FIELD: 1501,
-        CREATE_SHOP_NAME_OF_USER_EXIST : 1502
+        CREATE_SHOP_NAME_OF_USER_EXIST : 1502,
+        SHOP_INVALID : 1503,
+        SHOP_ACTION_INVALID : 1504
     }
 }
 
