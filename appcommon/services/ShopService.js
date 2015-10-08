@@ -88,7 +88,7 @@ var createShop = function(req, res){
             shopDao.getShopStatusByValue(Constant.SHOP_STATUS_VALUE.ACTIVE).then(function(status){
                 var shopStatusID = 0;
                 if(status.length > 0){
-                    shopStatusID = status[0].userStatusID;
+                    shopStatusID = status[0].shopStatusID;
                 }
                 var shop = new Shop();
                 shop.userID = userID;
