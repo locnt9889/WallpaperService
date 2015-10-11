@@ -37,5 +37,13 @@ router.post('/getShopDistrictByShop', [accessTokenService.checkAccessToken, func
 router.post('/updateDistrictOfShop', [accessTokenService.checkAccessToken, function(req, res, next) {
     shopService.updateDistrictOfShop(req, res);
 }]);
+/* POST updateAvatarOfShop */
+router.post('/updateAvatarOfShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.updateAvatarOfShop(req, res);
+}]);
+/* POST create shop */
+router.post('/updateCoverOfShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.updateCoverOfShop(req, res);
+}]);
 
 module.exports = router;

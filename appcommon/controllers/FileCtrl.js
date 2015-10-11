@@ -34,4 +34,14 @@ router.get('/view-user-cover/:file', function (req, res) {
     fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_COVER);
 });
 
+/// Show files
+router.get('/view-shop-avatar/:file', function (req, res) {
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_AVATAR);
+});
+
+/// Show files
+router.get('/view-shop-cover/:file', function (req, res) {
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_COVER);
+});
+
 module.exports = router;

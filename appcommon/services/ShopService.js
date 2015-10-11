@@ -6,6 +6,8 @@ var https = require('https');
 var StringDecoder = require('string_decoder').StringDecoder;
 var multiparty = require('multiparty');
 
+var UploadResponseDTO = require("../modelsDto/UploadResponseDTO");
+
 var shopDao = require("../daos/ShopDao");
 var shopTypeDao = require("../daos/ShopTypeDao");
 var shopDistrictDao = require("../daos/ShopDistrictDao");
@@ -350,6 +352,145 @@ var updateDistrictOfShop = function(req, res){
     });
 };
 
+//upload avatar of shop
+function updateAvatarOfShop(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+
+    if(shopID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+        responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+        responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    var fileNamePre = "Shop_avatar_" + shopID;
+
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile.length == 0 || files.imageFile[0].size == 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_EMPTY_FILE.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE.SHOP_AVATAR){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_LIMITED_SIZE.message;
+            res.send(responseObj);
+            return;
+        }
+
+        //var uploadResponseDTO = new UploadResponseDTO();
+
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_AVATAR).then(function(fullFilePath){
+            var uploadResponseDTO = new UploadResponseDTO();
+            uploadResponseDTO.file = fullFilePath;
+
+            shopDao.update({"avatarImageURL" : fullFilePath}, Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (result) {
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                responseObj.results = uploadResponseDTO;
+                res.send(responseObj);
+            }, function (err) {
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+
+        },function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        });
+    });
+}
+
+//upload Cover
+function updateCoverOfShop(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+
+    if(shopID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+        responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+        responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    var fileNamePre = "Shop_cover_" + shopID;
+
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile.length == 0 || files.imageFile[0].size == 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_EMPTY_FILE.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE.SHOP_COVER){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_LIMITED_SIZE.message;
+            res.send(responseObj);
+            return;
+        }
+
+        //var uploadResponseDTO = new UploadResponseDTO();
+
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_COVER).then(function(fullFilePath){
+            var uploadResponseDTO = new UploadResponseDTO();
+            uploadResponseDTO.file = fullFilePath;
+
+            shopDao.update({"coverImageURL" : fullFilePath}, Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (result) {
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                responseObj.results = uploadResponseDTO;
+                res.send(responseObj);
+            }, function (err) {
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+
+        },function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        });
+    });
+}
+
 /*Exports*/
 module.exports = {
     createShop : createShop,
@@ -357,5 +498,7 @@ module.exports = {
     getShopTypeByShop : getShopTypeByShop,
     getShopDistrictByShop : getShopDistrictByShop,
     updateTypeOfShop : updateTypeOfShop,
-    updateDistrictOfShop : updateDistrictOfShop
+    updateDistrictOfShop : updateDistrictOfShop,
+    updateAvatarOfShop : updateAvatarOfShop,
+    updateCoverOfShop : updateCoverOfShop
 }

@@ -64,12 +64,16 @@ var UPLOAD_FILE_CONFIG = {
         IMAGE : 3145728,//3Mb
         USER_AVATAR : 3145728,//3Mb
         USER_COVER : 5242880,//5Mb
+        SHOP_AVATAR : 3145728,//3Mb
+        SHOP_COVER : 5242880,//5Mb
     },
     UPLOAD_FOLDER : "uploads",
     PRE_FORDER_IMAGE : {
         IMAGE : "/Images/Demo/",
         USER_AVATAR : "/Images/User/Avatars/",
         USER_COVER : "/Images/User/Covers/",
+        SHOP_AVATAR : "/Images/Shop/Avatars/",
+        SHOP_COVER : "/Images/Shop/Covers/"
     }
 }
 
