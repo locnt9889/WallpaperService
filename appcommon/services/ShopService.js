@@ -491,6 +491,34 @@ function updateCoverOfShop(req, res) {
     });
 }
 
+//delete shop
+function deleteShop(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+
+    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+
+    if(shopID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+        responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+        responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    shopDao.update({"isActive" : 0}, Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (result) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = result;
+        res.send(responseObj);
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+}
+
 /*Exports*/
 module.exports = {
     createShop : createShop,
@@ -500,5 +528,6 @@ module.exports = {
     updateTypeOfShop : updateTypeOfShop,
     updateDistrictOfShop : updateDistrictOfShop,
     updateAvatarOfShop : updateAvatarOfShop,
-    updateCoverOfShop : updateCoverOfShop
+    updateCoverOfShop : updateCoverOfShop,
+    deleteShop : deleteShop
 }
