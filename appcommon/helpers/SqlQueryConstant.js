@@ -4,7 +4,7 @@
 
 var GENERIC_SQL = {
     SLQ_FINDALL : "SELECT * FROM ??",
-    SLQ_FINDALL_ACTIVE : "SELECT * FROM ?? WHERE isActive = 1",
+    SLQ_FINDALL_ACTIVE : "SELECT * FROM ?? WHERE ?? = 1",
     SLQ_FINDONE_BY_ID : "SELECT * FROM ?? WHERE ?? = ?",
     SLQ_FINDALL_BY_FIELD : "SELECT * FROM ?? WHERE ?? = ?",
     SLQ_FINDALL_BY_FIELD_ACTIVE : "SELECT * FROM ?? WHERE ?? = ? AND isActive = 1",

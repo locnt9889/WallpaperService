@@ -46,9 +46,14 @@ router.post('/updateCoverOfShop', [accessTokenService.checkAccessToken, function
     shopService.updateCoverOfShop(req, res);
 }]);
 
-/* POST create shop */
+/* POST delete shop */
 router.post('/deleteShop', [accessTokenService.checkAccessToken, function(req, res, next) {
     shopService.deleteShop(req, res);
+}]);
+
+/* POST get shop detail*/
+router.post('/getShopDetail', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.getShopDetail(req, res);
 }]);
 
 module.exports = router;
