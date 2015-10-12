@@ -24,7 +24,7 @@ var getAllShopTypeParent = function(req, res){
         responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
         res.send(responseObj);
     }else{
-        shopTypeParentDao.findAllActive().then(function(data){
+        shopTypeParentDao.findAllActive("isActive").then(function(data){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = data;
             res.send(responseObj);
@@ -76,10 +76,10 @@ var getAllShopTypeData = function(req, res){
         responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
         res.send(responseObj);
     }else{
-        shopTypeParentDao.findAllActive().then(function(dataParent){
+        shopTypeParentDao.findAllActive("isActive").then(function(dataParent){
             shopType.parents = dataParent;
 
-            shopTypeChildDao.findAllActive().then(function(data){
+            shopTypeChildDao.findAllActive("isActive").then(function(data){
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                 shopType.childrent = data;
                 responseObj.results = shopType;
