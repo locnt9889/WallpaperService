@@ -358,7 +358,7 @@ function updateAvatarOfShop(req, res) {
 
     var accessTokenObj = req.accessTokenObj;
     var userID = accessTokenObj.userID;
-    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+    var shopID = isNaN(req.query.shopID)? 0 : parseInt(req.query.shopID);
 
     if(shopID <= 0){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
@@ -428,7 +428,7 @@ function updateCoverOfShop(req, res) {
     var accessTokenObj = req.accessTokenObj;
     var userID = accessTokenObj.userID;
 
-    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+    var shopID = isNaN(req.query.shopID)? 0 : parseInt(req.query.shopID);
 
     if(shopID <= 0){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
