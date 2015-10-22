@@ -557,6 +557,7 @@ var updateShopInfo = function(req, res){
     var shopName = req.body.shopName ? req.body.shopName : "";
     var shopDesc = req.body.shopDesc ? req.body.shopDesc : "";
     var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : "";
+
     var isShowPrice = req.body.isShowPrice ? req.body.isShowPrice : false;
     var isCanOrder = req.body.isCanOrder ? req.body.isCanOrder : false;
     var isCloseShop = req.body.isCloseShop ? req.body.isCloseShop : false;
