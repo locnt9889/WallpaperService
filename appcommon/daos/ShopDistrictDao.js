@@ -27,5 +27,11 @@ MysqlHelper.prototype.removeMultiShopDistrictById = function(shopID, districtIdL
     return shopDistrictDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.removeAllShopDistrictOfShop = function(shopID){
+    var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SLQ_REMOVE_ALL_SHOP_DISTRICT_OF_SHOP;
+    var params = [shopID];
+    return shopDistrictDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = shopDistrictDao;

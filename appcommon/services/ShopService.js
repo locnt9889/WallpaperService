@@ -197,7 +197,7 @@ var updateTypeOfShop = function(req, res){
 
     var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
     var shopTypeIds = req.body.shopTypeIds ? req.body.shopTypeIds : "";
-    var action = req.body.action ? req.body.action : "";
+    //var action = req.body.action ? req.body.action : "";
 
     if(checkValidateUtil.isEmptyFeild(shopTypeIds)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.CREATE_SHOP_EMPTY_FIELD;
@@ -215,13 +215,13 @@ var updateTypeOfShop = function(req, res){
         return;
     }
 
-    if(action != 'REMOVE' && action != 'INSERT'){
+    /*if(action != 'REMOVE' && action != 'INSERT'){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_ACTION_INVALID;
         responseObj.errorsObject = message.SHOP.SHOP_ACTION_INVALID;
         responseObj.errorsMessage = message.SHOP.SHOP_ACTION_INVALID.message;
         res.send(responseObj);
         return;
-    }
+    }*/
 
     var shopTypeIDList = shopTypeIds.split(";");
 
@@ -242,15 +242,15 @@ var updateTypeOfShop = function(req, res){
     var shopTypeIdListStr = "(" + shopTypeIdList.join() + ")";
 
     //remove
-    shopTypeDao.removeMultiShopTypeById(shopID, shopTypeIdListStr).then(function (result) {
-        console.log("remove shop type for create shop success");
-        if(action == 'REMOVE'){
-            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-            responseObj.results = result;
-            res.send(responseObj);
-        }else if(action == 'INSERT'){    //insert
+    shopTypeDao.removeAllShopTypeOfShop(shopID).then(function (result) {
+        console.log("remove all shop type of shop success");
+        //if(action == 'REMOVE'){
+        //    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        //    responseObj.results = result;
+        //    res.send(responseObj);
+        //}else if(action == 'INSERT'){    //insert
             shopTypeDao.addMultiShopType(shopTypeModelList).then(function (data) {
-                console.log("add shop type for create shop success");
+                console.log("add shop type for update shop success");
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                 responseObj.results = data;
                 res.send(responseObj);
@@ -261,7 +261,7 @@ var updateTypeOfShop = function(req, res){
                 responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                 res.send(responseObj);
             });
-        }
+        //}
     }, function (err) {
         responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
         responseObj.errorsObject = err;
@@ -278,7 +278,7 @@ var updateDistrictOfShop = function(req, res){
 
     var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
     var districtIds = req.body.districtIds ? req.body.districtIds : "";
-    var action = req.body.action ? req.body.action : "";
+    //var action = req.body.action ? req.body.action : "";
 
     if(checkValidateUtil.isEmptyFeild(districtIds)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.CREATE_SHOP_EMPTY_FIELD;
@@ -296,13 +296,13 @@ var updateDistrictOfShop = function(req, res){
         return;
     }
 
-    if(action != 'REMOVE' && action != 'INSERT'){
+    /*if(action != 'REMOVE' && action != 'INSERT'){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_ACTION_INVALID;
         responseObj.errorsObject = message.SHOP.SHOP_ACTION_INVALID;
         responseObj.errorsMessage = message.SHOP.SHOP_ACTION_INVALID.message;
         res.send(responseObj);
         return;
-    }
+    }*/
 
     var districtIDList = districtIds.split(";");
 
@@ -324,13 +324,13 @@ var updateDistrictOfShop = function(req, res){
     var districtIdListStr = "(" + districtIdlList.join() + ")";
 
     //remove
-    shopTypeDao.removeMultiShopDistrictById(shopID, districtIdListStr).then(function (result) {
+    shopTypeDao.removeAllShopDistrictOfShop(shopID).then(function (result) {
         console.log("remove district of shop success");
-        if(action == 'REMOVE'){
-            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-            responseObj.results = result;
-            res.send(responseObj);
-        }else if(action == 'INSERT'){    //insert
+        //if(action == 'REMOVE'){
+        //    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        //    responseObj.results = result;
+        //    res.send(responseObj);
+        //}else if(action == 'INSERT'){    //insert
             shopTypeDao.addMultiShopDistrict(districtModelList).then(function (data) {
                 console.log("add district shop success");
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
@@ -343,7 +343,7 @@ var updateDistrictOfShop = function(req, res){
                 responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                 res.send(responseObj);
             });
-        }
+        //}
     }, function (err) {
         responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
         responseObj.errorsObject = err;

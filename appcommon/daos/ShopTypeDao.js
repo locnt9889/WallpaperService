@@ -27,5 +27,11 @@ MysqlHelper.prototype.removeMultiShopTypeById = function(shopID, shopTypeIdListS
     return shopTypeDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.removeAllShopTypeOfShop = function(shopID){
+    var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SLQ_REMOVE_ALL_SHOP_TYPE_OF_SHOP;
+    var params = [shopID];
+    return shopTypeDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = shopTypeDao;
