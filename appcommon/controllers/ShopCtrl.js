@@ -56,4 +56,9 @@ router.post('/getShopDetail', [accessTokenService.checkAccessToken, function(req
     shopService.getShopDetail(req, res);
 }]);
 
+/* POST update shop info*/
+router.post('/updateShopInfo', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.updateShopInfo(req, res);
+}]);
+
 module.exports = router;

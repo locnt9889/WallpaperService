@@ -133,6 +133,10 @@ var SHOP = {
     SHOP_ACTION_INVALID : {
         code: 1504,
         message: "Action for Shop is invalid"
+    },
+    SHOP_UPDATE_USER_IS_DENIED : {
+        code: 1505,
+        message: "User is denied with action update shop!"
     }
 }
 

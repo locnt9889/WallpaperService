@@ -11,10 +11,10 @@ function Shop(){
     this.avatarImageURL = "";
     this.coverImageURL =  "";
     this.phoneNumber = "";
-    this.countryCode = 0;
-    this.isShowPrice = 1;
-    this.isCanOrder =  1;
-    this.isCloseShop = 0;
+    this.countryCode = false;
+    this.isShowPrice = true;
+    this.isCanOrder =  true;
+    this.isCloseShop = false;
     this.closeShopMessage = "";
     this.viewCountNumber = 0;
     this.isActive = 1;

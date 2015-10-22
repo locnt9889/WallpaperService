@@ -16,6 +16,7 @@ var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var Shop = require("../models/Shop");
 var ShopType = require("../models/ShopType");
 var ShopDistrict = require("../models/ShopDistrict");
+var ShopUpdateDto = require("../modelsDto/ShopUpdateDto");
 
 var Constant = require("../helpers/Constant");
 var message = require("../message/en");
@@ -547,6 +548,72 @@ function getShopDetail(req, res) {
     });
 }
 
+var updateShopInfo = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+
+    var shopID = req.body.shopID ? req.body.shopID : "";
+    var shopName = req.body.shopName ? req.body.shopName : "";
+    var shopDesc = req.body.shopDesc ? req.body.shopDesc : "";
+    var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : "";
+    var isShowPrice = req.body.isShowPrice ? req.body.isShowPrice : false;
+    var isCanOrder = req.body.isCanOrder ? req.body.isCanOrder : false;
+    var isCloseShop = req.body.isCloseShop ? req.body.isCloseShop : false;
+    var closeShopMessage = req.body.closeShopMessage ? req.body.closeShopMessage : "";
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else {
+        var userID = accessTokenObj.userID;
+        var shopUpdateDto = new ShopUpdateDto();
+        shopUpdateDto.shopName = shopName;
+        shopUpdateDto.shopDesc = shopDesc;
+        shopUpdateDto.phoneNumber = phoneNumber;
+        shopUpdateDto.isShowPrice = isShowPrice;
+        shopUpdateDto.isCanOrder = isCanOrder;
+        shopUpdateDto.isCloseShop = isCloseShop;
+        shopUpdateDto.closeShopMessage = closeShopMessage;
+
+        shopDao.findOneById(Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (data) {
+            if(data.length == 0 ){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+                responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+                responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+                res.send(responseObj);
+                return;
+            }else{
+                if(data[0].userID != userID){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_UPDATE_USER_IS_DENIED;
+                    responseObj.errorsObject = message.SHOP.SHOP_UPDATE_USER_IS_DENIED;
+                    responseObj.errorsMessage = message.SHOP.SHOP_UPDATE_USER_IS_DENIED.message;
+                    res.send(responseObj);
+                    return;
+                }else{
+                    shopDao.update(shopUpdateDto, Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (result) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                        responseObj.results = result;
+                        res.send(responseObj);
+                    }, function (err) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                        responseObj.errorsObject = err;
+                        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                        res.send(responseObj);
+                    });
+                }
+            }
+        }, function (err) {
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 /*Exports*/
 module.exports = {
     createShop : createShop,
@@ -558,5 +625,6 @@ module.exports = {
     updateAvatarOfShop : updateAvatarOfShop,
     updateCoverOfShop : updateCoverOfShop,
     deleteShop : deleteShop,
-    getShopDetail : getShopDetail
+    getShopDetail : getShopDetail,
+    updateShopInfo : updateShopInfo
 }
