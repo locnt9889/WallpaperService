@@ -15,5 +15,11 @@ MysqlHelper.prototype.checkCategoryNameOfShopExist = function(shopID, name){
     return categoryDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.getCategoryByShop = function(shopID){
+    var sql = SqlQueryConstant.CATEGORY_SQL_SCRIPT.GET_CATEGORY_BY_SHOP;
+    var params = [shopID];
+    return categoryDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = categoryDao;

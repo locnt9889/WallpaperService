@@ -279,10 +279,55 @@ var deleteCategory = function(req, res){
     });
 };
 
+var getCategoryByShop = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var shopID = isNaN(req.body.shopID)? 0 : parseInt(req.body.shopID);
+
+    if(shopID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+        responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+        responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    shopDao.findOneById(Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (data) {
+        if(data.length == 0 ){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+            responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+            responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+            res.send(responseObj);
+            return;
+        }else{
+
+            categoryDao.getCategoryByShop(shopID).then(function(data1){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                responseObj.results = data1;
+                res.send(responseObj);
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     createCategory : createCategory,
     getCategoryDetail : getCategoryDetail,
     updateCategory : updateCategory,
-    deleteCategory : deleteCategory
+    deleteCategory : deleteCategory,
+    getCategoryByShop : getCategoryByShop
 }

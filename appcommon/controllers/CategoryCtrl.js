@@ -28,4 +28,9 @@ router.post('/updateCategory', [accessTokenService.checkAccessToken, function(re
     categoryService.updateCategory(req, res);
 }]);
 
+/* POST update category info*/
+router.post('/getCategoryByShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    categoryService.getCategoryByShop(req, res);
+}]);
+
 module.exports = router;
