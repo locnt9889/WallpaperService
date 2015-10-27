@@ -140,6 +140,21 @@ var SHOP = {
     }
 }
 
+var CATEGORY = {
+    CREATE_CATEGORY_EMPTY_FIELD: {
+        code: 1601,
+        message: "Error empty with parameter required!"
+    },
+    CREATE_CATEGORY_NAME_OF_SHOP_EXIST : {
+        code: 1602,
+        message: "Error create category of shop: name was existed!"
+    },
+    CATEGORY_INVALID : {
+        code: 1503,
+        message: "Category is invalid"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
@@ -150,5 +165,6 @@ module.exports = {
     USER_CHANGE_PASSWORD : USER_CHANGE_PASSWORD,
     UPLOAD_FILE : UPLOAD_FILE,
     USER_CONTACT : USER_CONTACT,
-    SHOP : SHOP
+    SHOP : SHOP,
+    CATEGORY : CATEGORY
 }

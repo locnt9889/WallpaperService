@@ -55,6 +55,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_District",
         NAME_FIELD_ID : "id"
     },
+    SHOP_CATEGORY : {
+        NAME : "Shop_Categories",
+        NAME_FIELD_ID : "categoryID"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -121,6 +125,11 @@ var CODE_STATUS = {
         SHOP_INVALID : 1503,
         SHOP_ACTION_INVALID : 1504,
         SHOP_UPDATE_USER_IS_DENIED : 1505
+    },
+    CATEGORY : {
+        CREATE_CATEGORY_EMPTY_FIELD: 1601,
+        CREATE_CATEGORY_NAME_OF_SHOP_EXIST : 1602,
+        CATEGORY_INVALID : 1603
     }
 }
 
