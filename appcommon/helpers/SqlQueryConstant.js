@@ -68,7 +68,7 @@ var SHOP_SQL_SCRIPT = {
 
 var CATEGORY_SQL_SCRIPT = {
     CHECK_CATEGORY_NAME_OF_SHOP_EXIST : "SELECT * FROM Shop_Categories WHERE shopID = ? AND categoryName = ?",
-    GET_CATEGORY_BY_SHOP : "SELECT * FROM Shop_Categories WHERE shopID = ? AND  isActive= 1"
+    GET_CATEGORY_BY_SHOP : "SELECT *,0 productCount FROM Shop_Categories WHERE shopID = ? AND  isActive= 1"
 }
 
 /*Exports*/
