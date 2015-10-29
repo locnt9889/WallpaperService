@@ -554,7 +554,7 @@ function updateAvatar(req, res) {
 
         var uploadResponseDTO = new UploadResponseDTO();
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_AVATAR).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.USER_AVATAR).then(function(fullFilePath){
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 
@@ -614,7 +614,7 @@ function updateCover(req, res) {
 
         var uploadResponseDTO = new UploadResponseDTO();
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_COVER).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.USER_COVER).then(function(fullFilePath){
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 

@@ -397,7 +397,7 @@ function updateAvatarOfShop(req, res) {
 
         //var uploadResponseDTO = new UploadResponseDTO();
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_AVATAR).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_AVATAR).then(function(fullFilePath){
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 
@@ -467,7 +467,7 @@ function updateCoverOfShop(req, res) {
 
         //var uploadResponseDTO = new UploadResponseDTO();
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_COVER).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_COVER).then(function(fullFilePath){
             var uploadResponseDTO = new UploadResponseDTO();
             uploadResponseDTO.file = fullFilePath;
 

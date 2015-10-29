@@ -141,6 +141,7 @@ var updateCategory = function(req, res){
 
     var categoryName = req.body.categoryName? req.body.categoryName : "";
     var categoryDesc = req.body.categoryDesc? req.body.categoryDesc : "";
+    var isShow = req.body.isShow? req.body.isShow : 0;
 
     if(checkValidateUtil.isEmptyFeild(categoryName)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CREATE_CATEGORY_EMPTY_FIELD;
@@ -179,6 +180,7 @@ var updateCategory = function(req, res){
                                 var categoryUpdate = new CategoryUpdateDto();
                                 categoryUpdate.categoryName = categoryName;
                                 categoryUpdate.categoryDesc = categoryDesc;
+                                categoryUpdate.isShow = isShow;
 
                                 categoryDao.update(categoryUpdate, Constant.TABLE_NAME_DB.SHOP_CATEGORY.NAME_FIELD_ID, categoryID).then(function (result) {
                                     responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
@@ -323,11 +325,122 @@ var getCategoryByShop = function(req, res){
     });
 };
 
+//upload Cover
+function updateCoverImage(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var categoryID = isNaN(req.query.categoryID)? 0 : parseInt(req.query.categoryID);
+
+    if(categoryID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_INVALID;
+        responseObj.errorsObject = message.CATEGORY.CATEGORY_INVALID;
+        responseObj.errorsMessage = message.CATEGORY.CATEGORY_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    categoryDao.findOneById(Constant.TABLE_NAME_DB.SHOP_CATEGORY.NAME_FIELD_ID, categoryID).then(function (dataCategory) {
+        if(dataCategory.length == 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_INVALID;
+            responseObj.errorsObject = message.CATEGORY.CATEGORY_INVALID;
+            responseObj.errorsMessage = message.CATEGORY.CATEGORY_INVALID.message;
+            res.send(responseObj);
+            return;
+        }else {
+            var shopID = dataCategory[0].shopID;
+
+            shopDao.findOneById(Constant.TABLE_NAME_DB.SHOP.NAME_FIELD_ID, shopID).then(function (data) {
+                if (data.length == 0) {
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+                    responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+                    responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+                    res.send(responseObj);
+                    return;
+                } else {
+                    if (data[0].userID != userID) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_UPDATE_USER_IS_DENIED;
+                        responseObj.errorsObject = message.SHOP.SHOP_UPDATE_USER_IS_DENIED;
+                        responseObj.errorsMessage = message.SHOP.SHOP_UPDATE_USER_IS_DENIED.message;
+                        res.send(responseObj);
+                        return;
+                    } else {
+                        var fileNamePre = "Category_cover_" + categoryID;
+
+                        var form = new multiparty.Form();
+                        form.parse(req, function(err, fields, files) {
+                            if(err){
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+                                responseObj.errorsObject = err;
+                                responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+                                res.send(responseObj);
+                                return;
+                            }
+                            if(files.imageFile.length == 0 || files.imageFile[0].size == 0){
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_EMPTY_FILE;
+                                responseObj.errorsObject = message.UPLOAD_FILE.ERROR_EMPTY_FILE;
+                                responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_EMPTY_FILE.message;
+                                res.send(responseObj);
+                                return;
+                            }
+                            if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE.CATEGORY_COVER){
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+                                responseObj.errorsObject = message.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+                                responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_LIMITED_SIZE.message;
+                                res.send(responseObj);
+                                return;
+                            }
+
+                            //var uploadResponseDTO = new UploadResponseDTO();
+
+                            uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.CATEGORY_COVER).then(function(fullFilePath){
+                                var uploadResponseDTO = new UploadResponseDTO();
+                                uploadResponseDTO.file = fullFilePath;
+
+                                categoryDao.update({"coverImage" : fullFilePath}, Constant.TABLE_NAME_DB.SHOP_CATEGORY.NAME_FIELD_ID, categoryID).then(function (result) {
+                                    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                                    responseObj.results = uploadResponseDTO;
+                                    res.send(responseObj);
+                                }, function (err) {
+                                    responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                                    responseObj.errorsObject = err;
+                                    responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                                    res.send(responseObj);
+                                });
+
+                            },function(err){
+                                responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+                                responseObj.errorsObject = err;
+                                responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+                                res.send(responseObj);
+                                return;
+                            });
+                        });
+                    }
+                }
+            }, function (err) {
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+}
+
 /*Exports*/
 module.exports = {
     createCategory : createCategory,
     getCategoryDetail : getCategoryDetail,
     updateCategory : updateCategory,
     deleteCategory : deleteCategory,
-    getCategoryByShop : getCategoryByShop
+    getCategoryByShop : getCategoryByShop,
+    updateCoverImage : updateCoverImage
 }

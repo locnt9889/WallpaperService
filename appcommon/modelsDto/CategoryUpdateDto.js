@@ -5,6 +5,7 @@
 function CategoryUpdateDto(){
     this.categoryName = "";
     this.categoryDesc = "";
+    this.isShow = 1;
     this.modifiedDate = new Date();
 };
 

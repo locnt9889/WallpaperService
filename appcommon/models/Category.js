@@ -10,7 +10,8 @@ function Category(){
     this.isActive = 1;
     this.createdDate =  new Date();
     this.modifiedDate = new Date();
-
+    this.isShow = 1;
+    this.coverImage = "";
 };
 
 module.exports = Category;

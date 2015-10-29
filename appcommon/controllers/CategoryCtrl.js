@@ -33,4 +33,9 @@ router.post('/getCategoryByShop', [accessTokenService.checkAccessToken, function
     categoryService.getCategoryByShop(req, res);
 }]);
 
+/* POST create shop */
+router.post('/updateCoverImage', [accessTokenService.checkAccessToken, function(req, res, next) {
+    categoryService.updateCoverImage(req, res);
+}]);
+
 module.exports = router;

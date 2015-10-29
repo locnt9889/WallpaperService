@@ -24,32 +24,32 @@ router.post('/upload-action', function(req, res, next) {
 
 /// Show files
 router.get('/view-file/:file', function (req, res) {
-    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.IMAGE);
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.IMAGE);
 });
 
 /// Show files
 router.get('/view-user-avatar/:file', function (req, res) {
-    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_AVATAR);
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.USER_AVATAR);
 });
 
 /// Show files
 router.get('/view-user-cover/:file', function (req, res) {
-    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.USER_COVER);
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.USER_COVER);
 });
 
 /// Show files
 router.get('/view-shop-avatar/:file', function (req, res) {
-    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_AVATAR);
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_AVATAR);
 });
 
 /// Show files
 router.get('/view-shop-cover/:file', function (req, res) {
-    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_COVER);
+    fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_COVER);
 });
 
 /// Show files
 router.get('/download-clone/', function (req, res) {
-    //fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.SHOP_COVER);
+    //fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_COVER);
 
     var http = require('http');
     var fs = require('fs');

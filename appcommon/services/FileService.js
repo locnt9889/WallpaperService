@@ -27,7 +27,7 @@ function uploadFile(req, res) {
             return;
         }
 
-        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, "Demo",files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FORDER_IMAGE.IMAGE).then(function(fullFilePath){
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, "Demo",files.imageFile[0].path, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.IMAGE).then(function(fullFilePath){
             res.send({'path' : fullFilePath});
             return;
         },function(err){
