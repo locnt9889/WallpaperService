@@ -175,29 +175,16 @@ var updateCategory = function(req, res){
                         res.send(responseObj);
                         return;
                     } else {
-                        categoryDao.checkCategoryNameOfShopExist(shopID, categoryName).then(function (data1) {
-                            if (data1.length == 0) {
-                                var categoryUpdate = new CategoryUpdateDto();
-                                categoryUpdate.categoryName = categoryName;
-                                categoryUpdate.categoryDesc = categoryDesc;
-                                categoryUpdate.isShow = isShow;
 
-                                categoryDao.update(categoryUpdate, Constant.TABLE_NAME_DB.SHOP_CATEGORY.NAME_FIELD_ID, categoryID).then(function (result) {
-                                    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                                    responseObj.results = result;
-                                    res.send(responseObj);
-                                }, function (err) {
-                                    responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                                    responseObj.errorsObject = err;
-                                    responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-                                    res.send(responseObj);
-                                });
-                            } else {
-                                responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CREATE_CATEGORY_NAME_OF_SHOP_EXIST;
-                                responseObj.errorsObject = message.CATEGORY.CREATE_CATEGORY_NAME_OF_SHOP_EXIST;
-                                responseObj.errorsMessage = message.CATEGORY.CREATE_CATEGORY_NAME_OF_SHOP_EXIST.message;
-                                res.send(responseObj);
-                            }
+                        var categoryUpdate = new CategoryUpdateDto();
+                        categoryUpdate.categoryName = categoryName;
+                        categoryUpdate.categoryDesc = categoryDesc;
+                        categoryUpdate.isShow = isShow;
+
+                        categoryDao.update(categoryUpdate, Constant.TABLE_NAME_DB.SHOP_CATEGORY.NAME_FIELD_ID, categoryID).then(function (result) {
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                            responseObj.results = result;
+                            res.send(responseObj);
                         }, function (err) {
                             responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
                             responseObj.errorsObject = err;
