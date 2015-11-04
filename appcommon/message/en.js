@@ -150,8 +150,27 @@ var CATEGORY = {
         message: "Error create category of shop: name was existed!"
     },
     CATEGORY_INVALID : {
-        code: 1503,
+        code: 1603,
         message: "Category is invalid"
+    },
+    CATEGORY_UPDATE_USER_IS_DENIED : {
+        code: 1605,
+        message: "User is denied with action update category!"
+    }
+}
+
+var PRODUCT = {
+    CREATE_PRODUCT_EMPTY_FIELD: {
+        code: 1701,
+        message: "Error empty with parameter required!"
+    },
+    CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST : {
+        code: 1702,
+        message: "Error create product of category: name was existed!"
+    },
+    PRODUCT_INVALID : {
+        code: 1703,
+        message: "Product is invalid"
     }
 }
 
@@ -166,5 +185,6 @@ module.exports = {
     UPLOAD_FILE : UPLOAD_FILE,
     USER_CONTACT : USER_CONTACT,
     SHOP : SHOP,
-    CATEGORY : CATEGORY
+    CATEGORY : CATEGORY,
+    PRODUCT : PRODUCT
 }

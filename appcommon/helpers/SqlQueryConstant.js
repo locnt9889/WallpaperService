@@ -63,11 +63,17 @@ var SHOP_SQL_SCRIPT = {
     SLQ_REMOVE_ALL_SHOP_DISTRICT_OF_SHOP : "DELETE FROM Shop_District WHERE shopID = ?",
     GET_SHOP_BY_USER : "SELECT * FROM Shop WHERE userID = ? AND isActive = 1",
     GET_SHOP_TYPE_BY_SHOP : "SELECT * FROM Shop_Type WHERE shopID = ?",
-    GET_SHOP_DISTRICT_BY_SHOP : "SELECT * FROM Shop_District WHERE shopID = ?",
+    GET_SHOP_DISTRICT_BY_SHOP : "SELECT * FROM Shop_District WHERE shopID = ?"
 }
 
 var CATEGORY_SQL_SCRIPT = {
     CHECK_CATEGORY_NAME_OF_SHOP_EXIST : "SELECT * FROM Shop_Categories WHERE shopID = ? AND categoryName = ?",
+    GET_CATEGORY_BY_SHOP : "SELECT *,0 productCount FROM Shop_Categories WHERE shopID = ? AND  isActive= 1",
+    CHECK_PERMISSION_USER_AND_CATEGORY : "SELECT * FROM Shop_Categories sc INNER JOIN Shop sh ON sc.shopID = sh.shopID WHERE sh.userID = ? and sc.categoryID = ?"
+}
+
+var PRODUCT_SQL_SCRIPT = {
+    CHECK_PRODUCT_NAME_OF_CATEGORY_EXIST : "SELECT * FROM Shop_Product WHERE categoryID = ? AND productName = ?",
     GET_CATEGORY_BY_SHOP : "SELECT *,0 productCount FROM Shop_Categories WHERE shopID = ? AND  isActive= 1"
 }
 
@@ -79,5 +85,6 @@ module.exports = {
     USER_SQL_SCRIPT : USER_SQL_SCRIPT,
     USER_CONTACT_SQL_SCRIPT : USER_CONTACT_SQL_SCRIPT,
     SHOP_SQL_SCRIPT : SHOP_SQL_SCRIPT,
-    CATEGORY_SQL_SCRIPT : CATEGORY_SQL_SCRIPT
+    CATEGORY_SQL_SCRIPT : CATEGORY_SQL_SCRIPT,
+    PRODUCT_SQL_SCRIPT : PRODUCT_SQL_SCRIPT
 }

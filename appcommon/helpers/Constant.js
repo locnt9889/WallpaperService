@@ -59,6 +59,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_Categories",
         NAME_FIELD_ID : "categoryID"
     },
+    SHOP_PRODUCT : {
+        NAME : "Shop_Product",
+        NAME_FIELD_ID : "productID"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -131,7 +135,13 @@ var CODE_STATUS = {
     CATEGORY : {
         CREATE_CATEGORY_EMPTY_FIELD: 1601,
         CREATE_CATEGORY_NAME_OF_SHOP_EXIST : 1602,
-        CATEGORY_INVALID : 1603
+        CATEGORY_INVALID : 1603,
+        CATEGORY_UPDATE_USER_IS_DENIED : 1605
+    },
+    PRODUCT : {
+        CREATE_PRODUCT_EMPTY_FIELD: 1701,
+        CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST : 1702,
+        PRODUCT_INVALID : 1703
     }
 }
 

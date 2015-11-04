@@ -21,5 +21,11 @@ MysqlHelper.prototype.getCategoryByShop = function(shopID){
     return categoryDao.queryExecute(sql, params);
 };
 
+MysqlHelper.prototype.checkPermissionUserAndCategory = function(categoryID, name){
+    var sql = SqlQueryConstant.CATEGORY_SQL_SCRIPT.CHECK_PERMISSION_USER_AND_CATEGORY
+    var params = [categoryID, name];
+    return categoryDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = categoryDao;
