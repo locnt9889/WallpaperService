@@ -172,9 +172,71 @@ var getProductByCategory = function(req, res){
     }
 };
 
+//delete product
+var deleteProduct = function(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
+
+    if(productID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+        responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+        responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    productDao.findOneById(Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function (resultProduct) {
+        if(resultProduct.length == 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
+            responseObj.errorsObject = message.SHOP.SHOP_INVALID;
+            responseObj.errorsMessage = message.SHOP.SHOP_INVALID.message;
+            res.send(responseObj);
+            return;
+        }else {
+            var categoryID = resultProduct[0].categoryID;
+
+            //check permission update category
+            categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
+                if(data.length > 0){
+                    productDao.update({"isActive" : 0}, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function (result) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                        responseObj.results = result;
+                        res.send(responseObj);
+                    }, function (err) {
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                        responseObj.errorsObject = err;
+                        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                        res.send(responseObj);
+                    });
+                }else{
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                    responseObj.errorsObject = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                    responseObj.errorsMessage = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED.message;
+                    res.send(responseObj);
+                }
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     createProduct : createProduct,
     getProductDetail : getProductDetail,
-    getProductByCategory : getProductByCategory
+    getProductByCategory : getProductByCategory,
+    deleteProduct : deleteProduct
 }
