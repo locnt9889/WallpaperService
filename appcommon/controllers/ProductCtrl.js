@@ -28,4 +28,9 @@ router.post('/deleteProduct', [accessTokenService.checkAccessToken,productServic
     productService.deleteProduct(req, res);
 }]);
 
+/* POST update product */
+router.post('/updateProduct', [accessTokenService.checkAccessToken,productService.checkPermissionUserAndCategory, function(req, res, next) {
+    productService.updateProduct(req, res);
+}]);
+
 module.exports = router;
