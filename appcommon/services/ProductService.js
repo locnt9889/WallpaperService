@@ -33,8 +33,8 @@ var createProduct = function(req, res){
     var price = req.body.price ? req.body.price : 0.0;
     var isSale = req.body.isSale ? req.body.isSale : false;
     var salePrice = req.body.salePrice ? req.body.salePrice : 0.0;
-    var dateStartSale = req.body.isShow ? req.body.isShow : new Date();
-    var dateEndSale = req.body.isShow ? req.body.isShow : new Date();
+    var dateStartSale = req.body.isShow ? req.body.dateStartSale : "0000-00-00 00:00:00";
+    var dateEndSale = req.body.isShow ? req.body.dateEndSale : "0000-00-00 00:00:00";
 
     var categoryID = isNaN(req.body.categoryID)? 0 : parseInt(req.body.categoryID);
 
@@ -107,7 +107,36 @@ var createProduct = function(req, res){
     });
 };
 
+//get product detail
+function getProductDetail(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+
+    var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
+
+    if(productID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.PRODUCT_INVALID;
+        responseObj.errorsObject = message.PRODUCT.PRODUCT_INVALID;
+        responseObj.errorsMessage = message.PRODUCT.PRODUCT_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    productDao.findOneById(Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function (result) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = result;
+        res.send(responseObj);
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+}
+
 /*Exports*/
 module.exports = {
-    createProduct : createProduct
+    createProduct : createProduct,
+    getProductDetail : getProductDetail
 }

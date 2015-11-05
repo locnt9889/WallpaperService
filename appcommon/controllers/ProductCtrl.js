@@ -8,9 +8,14 @@ var router = express.Router();
 var productService = require("../services/ProductService");
 var accessTokenService = require("../services/AccessTokenService");
 
-/* POST create shop */
+/* POST create product */
 router.post('/create', [accessTokenService.checkAccessToken, function(req, res, next) {
     productService.createProduct(req, res);
+}]);
+
+/* POST get detail product */
+router.post('/getProductDetail', [accessTokenService.checkAccessToken, function(req, res, next) {
+    productService.getProductDetail(req, res);
 }]);
 
 module.exports = router;
