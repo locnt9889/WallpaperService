@@ -51,11 +51,14 @@ var checkPermissionUserAndCategory = function(req, res, next) {
             return;
         }else {
             var categoryID = resultProduct[0].categoryID;
+            var productName = resultProduct[0].productName;
 
             //check permission update category
             categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
                 if(data.length > 0){
                     res.categoryID = categoryID;
+                    res.productName = productName;
+
                     next();
                 }else{
                     responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
@@ -292,44 +295,73 @@ var updateProduct = function(req, res) {
         return;
     }
 
-    productDao.checkProductNameOfCategoryExist(categoryID, productName).then(function(data){
-        if(data.length == 0){
-            var product = new ProductUpdateDto();
+    var oldProductName = res.productName;
 
-            product.count = count;
-            product.dateEndSale = dateEndSale;
-            product.dateStartSale = dateStartSale;
-            product.isSale = isSale;
-            product.isShow = isShow;
-            product.price = price;
-            product.productCode = productCode;
-            product.productName = productName;
-            product.salePrice = salePrice;
-            product.productProperties = productProperties;
+    if(oldProductName == productName){
+        var product = new ProductUpdateDto();
 
-            productDao.update(product, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function(result){
-                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                responseObj.results = result;
-                res.send(responseObj);
+        product.count = count;
+        product.dateEndSale = dateEndSale;
+        product.dateStartSale = dateStartSale;
+        product.isSale = isSale;
+        product.isShow = isShow;
+        product.price = price;
+        product.productCode = productCode;
+        product.productName = productName;
+        product.salePrice = salePrice;
+        product.productProperties = productProperties;
 
-            },function(err){
-                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                responseObj.errorsObject = err;
-                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-                res.send(responseObj);
-            });
-        }else{
-            responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-            responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-            responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST.message;
+        productDao.update(product, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function(result){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = result;
             res.send(responseObj);
-        }
-    }, function(err){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-        responseObj.errorsObject = err;
-        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-        res.send(responseObj);
-    });
+
+        },function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }else{
+        productDao.checkProductNameOfCategoryExist(categoryID, productName).then(function(data){
+            if(data.length == 0){
+                var product = new ProductUpdateDto();
+
+                product.count = count;
+                product.dateEndSale = dateEndSale;
+                product.dateStartSale = dateStartSale;
+                product.isSale = isSale;
+                product.isShow = isShow;
+                product.price = price;
+                product.productCode = productCode;
+                product.productName = productName;
+                product.salePrice = salePrice;
+                product.productProperties = productProperties;
+
+                productDao.update(product, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function(result){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                    responseObj.results = result;
+                    res.send(responseObj);
+
+                },function(err){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                    responseObj.errorsObject = err;
+                    responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                    res.send(responseObj);
+                });
+            }else{
+                responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
+                responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
+                responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST.message;
+                res.send(responseObj);
+            }
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
 };
 
 /*Exports*/
