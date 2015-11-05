@@ -354,7 +354,7 @@ var updateDistrictOfShop = function(req, res){
 };
 
 //upload avatar of shop
-function updateAvatarOfShop(req, res) {
+var updateAvatarOfShop = function(req, res) {
     var responseObj = new ResponseServerDto();
 
     var accessTokenObj = req.accessTokenObj;
@@ -423,7 +423,7 @@ function updateAvatarOfShop(req, res) {
 }
 
 //upload Cover
-function updateCoverOfShop(req, res) {
+var updateCoverOfShop = function(req, res) {
     var responseObj = new ResponseServerDto();
 
     var accessTokenObj = req.accessTokenObj;
@@ -493,7 +493,7 @@ function updateCoverOfShop(req, res) {
 }
 
 //delete shop
-function deleteShop(req, res) {
+var deleteShop = function(req, res) {
     var responseObj = new ResponseServerDto();
 
     var accessTokenObj = req.accessTokenObj;
@@ -518,10 +518,10 @@ function deleteShop(req, res) {
         responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
         res.send(responseObj);
     });
-}
+};
 
-//delete shop
-function getShopDetail(req, res) {
+//get detail shop
+var getShopDetail = function (req, res) {
     var responseObj = new ResponseServerDto();
 
     var accessTokenObj = req.accessTokenObj;
@@ -546,7 +546,7 @@ function getShopDetail(req, res) {
         responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
         res.send(responseObj);
     });
-}
+};
 
 var updateShopInfo = function(req, res){
     var responseObj = new ResponseServerDto();
