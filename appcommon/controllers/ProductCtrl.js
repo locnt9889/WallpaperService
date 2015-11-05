@@ -13,6 +13,11 @@ router.post('/create', [accessTokenService.checkAccessToken, function(req, res, 
     productService.createProduct(req, res);
 }]);
 
+/* POST get product by category*/
+router.post('/getProductByCategory', [accessTokenService.checkAccessToken, function(req, res, next) {
+    productService.getProductByCategory(req, res);
+}]);
+
 /* POST get detail product */
 router.post('/getProductDetail', [accessTokenService.checkAccessToken, function(req, res, next) {
     productService.getProductDetail(req, res);

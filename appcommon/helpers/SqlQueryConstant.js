@@ -74,7 +74,8 @@ var CATEGORY_SQL_SCRIPT = {
 
 var PRODUCT_SQL_SCRIPT = {
     CHECK_PRODUCT_NAME_OF_CATEGORY_EXIST : "SELECT * FROM Shop_Product WHERE categoryID = ? AND productName = ?",
-    GET_CATEGORY_BY_SHOP : "SELECT *,0 productCount FROM Shop_Categories WHERE shopID = ? AND  isActive= 1"
+    GET_PRODUCT_BY_CATEGORY : "SELECT * FROM Shop_Product WHERE categoryID = ? AND isActive= 1 LIMIT ?, ?",
+    COUNT_PRODUCT_BY_CATEGORY : "SELECT COUNT(productID) as totalItems FROM Shop_Product WHERE categoryID = ? AND isActive= 1"
 }
 
 /*Exports*/

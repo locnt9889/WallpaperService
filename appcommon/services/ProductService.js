@@ -135,8 +135,46 @@ function getProductDetail(req, res) {
     });
 }
 
+//get product by category
+var getProductByCategory = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        var categoryID = isNaN(req.body.categoryID)? 0 : parseInt(req.body.categoryID);
+
+        if(categoryID <= 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_INVALID;
+            responseObj.errorsObject = message.CATEGORY.CATEGORY_INVALID;
+            responseObj.errorsMessage = message.CATEGORY.CATEGORY_INVALID.message;
+            res.send(responseObj);
+            return;
+        }
+
+        var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+        var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
+        productDao.getProductByCategory(categoryID, pageNum, perPage).then(function(data){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 /*Exports*/
 module.exports = {
     createProduct : createProduct,
-    getProductDetail : getProductDetail
+    getProductDetail : getProductDetail,
+    getProductByCategory : getProductByCategory
 }
