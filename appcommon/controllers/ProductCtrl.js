@@ -40,7 +40,6 @@ router.post('/createProductImage', [accessTokenService.checkAccessToken,productS
 
 /* POST get Image By Product */
 router.post('/getImageByProduct', [accessTokenService.checkAccessToken, function(req, res, next) {
-
     productService.getImageByProduct(req, res);
 }]);
 
