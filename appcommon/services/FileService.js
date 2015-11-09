@@ -50,9 +50,40 @@ function viewFile(req, res, preFolder) {
     });
 }
 
+function viewProductImageFile(req, res) {
+    var file = req.params.file;
+    var productID = req.query.productID ? req.query.productID : 0;
+
+    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
+    fs.exists(fullFile, function(result){
+        if(result){
+            res.sendfile(path.resolve(fullFile));
+        }else{
+            res.writeHead(404);
+            res.end();
+        }
+    });
+}
+
+function createFolderIfNotExits(folder_path){
+    fs.exists(folder_path, function(result){
+        if(!result){
+            mkdirp(path.resolve(folder_path), function (err) {
+                if (err) {
+                    console.error("Create folder " + folder_path + " error : " + err);
+                }else{
+                    console.log("Create folder " + folder_path + " success");
+                }
+            });
+        }
+    });
+}
+
 /*Exports*/
 module.exports = {
     uploadFile : uploadFile,
-    viewFile : viewFile
+    viewFile : viewFile,
+    viewProductImageFile : viewProductImageFile,
+    createFolderIfNotExits : createFolderIfNotExits
 
 }

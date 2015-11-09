@@ -33,4 +33,19 @@ router.post('/updateProduct', [accessTokenService.checkAccessToken,productServic
     productService.updateProduct(req, res);
 }]);
 
+/* POST create product image */
+router.post('/createProductImage', [accessTokenService.checkAccessToken,productService.checkPermissionUserAndCategory, function(req, res, next) {
+    productService.createProductImage(req, res);
+}]);
+
+/* POST get Image By Product */
+router.post('/getImageByProduct', [accessTokenService.checkAccessToken, function(req, res, next) {
+    productService.getImageByProduct(req, res);
+}]);
+
+/* POST get Image By Product */
+router.post('/deleteProductImage', [accessTokenService.checkAccessToken, productService.checkPermissionUserAndCategory, function(req, res, next) {
+    productService.deleteProductImage(req, res);
+}]);
+
 module.exports = router;

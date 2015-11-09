@@ -5,6 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require("path");
+var fs = require("fs");
 
 var mkdirp = require("mkdirp");
 
@@ -50,6 +51,11 @@ router.get('/view-shop-cover/:file', function (req, res) {
 /// Show files
 router.get('/view-category-cover/:file', function (req, res) {
     fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.CATEGORY_COVER);
+});
+
+/// Show files
+router.get('/view-product-image/:file', function (req, res) {
+    fileService.viewProductImageFile(req, res);
 });
 
 /// Show files
@@ -112,8 +118,27 @@ router.get('/download-clone/', function (req, res) {
 
         }
     });
+});
 
+/// Show files
+router.get('/create-folder/',function(req, res, next){
+    var folder_path = "uploads/Images/Products/3";
 
+    fs.exists(folder_path, function(result){
+        if(result){
+            res.sendfile(path.resolve(folder_path));
+        }else{
+            res.writeHead(404);
+            mkdirp(path.resolve(folder_path), function (err) {
+                if (err) {
+                    console.error(err);
+                    res.send(err);
+                }else{
+                    res.end("create success");
+                }
+            });
+        }
+    });
 });
 
 module.exports = router;

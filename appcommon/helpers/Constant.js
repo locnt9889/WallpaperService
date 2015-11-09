@@ -63,6 +63,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_Product",
         NAME_FIELD_ID : "productID"
     },
+    SHOP_PRODUCT_IMAGE : {
+        NAME : "Shop_Product_Images",
+        NAME_FIELD_ID : "id"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -74,7 +78,8 @@ var UPLOAD_FILE_CONFIG = {
         USER_COVER : 5242880,//5Mb
         SHOP_AVATAR : 3145728,//3Mb
         SHOP_COVER : 5242880,//5Mb
-        CATEGORY_COVER : 5242880//5Mb
+        CATEGORY_COVER : 5242880,//5Mb
+        PRODUCT_IMAGE : 5242880
     },
     UPLOAD_FOLDER : "uploads",
     PRE_FOLDER_IMAGE : {
@@ -83,7 +88,8 @@ var UPLOAD_FILE_CONFIG = {
         USER_COVER : "/Images/User/Covers/",
         SHOP_AVATAR : "/Images/Shop/Avatars/",
         SHOP_COVER : "/Images/Shop/Covers/",
-        CATEGORY_COVER : "/Images/Category/Covers/"
+        CATEGORY_COVER : "/Images/Category/Covers/",
+        PRODUCT_IMAGE : "/Images/Product/"
     }
 }
 
@@ -141,7 +147,8 @@ var CODE_STATUS = {
     PRODUCT : {
         CREATE_PRODUCT_EMPTY_FIELD: 1701,
         CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST : 1702,
-        PRODUCT_INVALID : 1703
+        PRODUCT_INVALID : 1703,
+        PRODUCT_IMAGE_INVALID : 1704
     }
 }
 

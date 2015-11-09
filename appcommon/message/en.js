@@ -171,6 +171,10 @@ var PRODUCT = {
     PRODUCT_INVALID : {
         code: 1703,
         message: "Product is invalid"
+    },
+    PRODUCT_INVALID_IMAGE : {
+        code: 1704,
+        message: "Product image is invalid"
     }
 }
 

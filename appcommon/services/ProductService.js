@@ -9,10 +9,12 @@ var multiparty = require('multiparty');
 var UploadResponseDTO = require("../modelsDto/UploadResponseDTO");
 
 var productDao = require("../daos/ProductDao");
+var productImageDao = require("../daos/ProductImageDao");
 var categoryDao = require("../daos/CategoryDao");
 
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var Product = require("../models/Product");
+var ProductImage = require("../models/ProductImage");
 var ProductUpdateDto = require("../modelsDto/ProductUpdateDto");
 
 var Constant = require("../helpers/Constant");
@@ -20,6 +22,7 @@ var message = require("../message/en");
 var checkValidateUtil = require("../utils/CheckValidateUtil");
 var serviceUtil = require("../utils/ServiceUtil");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
+var fileService = require("../services/FileService");
 
 /**
  * Check Permission update Category of user
@@ -138,7 +141,8 @@ var createProduct = function(req, res){
                         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                         responseObj.results = result;
                         res.send(responseObj);
-
+                        var folderImagesPath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + result.insertId;
+                        fileService.createFolderIfNotExits(folderImagesPath);
                     },function(err){
                         responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
                         responseObj.errorsObject = err;
@@ -364,6 +368,152 @@ var updateProduct = function(req, res) {
     }
 };
 
+//create image of product
+var createProductImage = function(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var productID = isNaN(req.query.productID)? 0 : parseInt(req.query.productID);
+    var imageDesc = req.query.imageDesc ? req.query.imageDesc : "";
+
+    if(productID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.PRODUCT_INVALID;
+        responseObj.errorsObject = message.PRODUCT.PRODUCT_INVALID;
+        responseObj.errorsMessage = message.PRODUCT.PRODUCT_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    var fileNamePre = "Product_avatar_" + productID;
+    var folderPre = Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/";
+
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile.length == 0 || files.imageFile[0].size == 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_EMPTY_FILE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_EMPTY_FILE.message;
+            res.send(responseObj);
+            return;
+        }
+        if(files.imageFile[0].size > Constant.UPLOAD_FILE_CONFIG.MAX_SIZE_IMAGE.PRODUCT_IMAGE){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsObject = message.UPLOAD_FILE.ERROR_LIMITED_SIZE;
+            responseObj.errorsMessage = message.UPLOAD_FILE.ERROR_LIMITED_SIZE.message;
+            res.send(responseObj);
+            return;
+        }
+
+        //var uploadResponseDTO = new UploadResponseDTO();
+
+        uploadFileHelper.writeFileUpload(files.imageFile[0].originalFilename, fileNamePre,files.imageFile[0].path, folderPre).then(function(fullFilePath){
+            //var uploadResponseDTO = new UploadResponseDTO();
+            //uploadResponseDTO.file = fullFilePath;
+
+            var productImage = new ProductImage();
+            productImage.productID = productID;
+            productImage.imageDesc = imageDesc;
+            productImage.imageURLFull = fullFilePath;
+
+            productImageDao.addNew(productImage).then(function(result){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                responseObj.results = result;
+                res.send(responseObj);
+            },function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+
+        },function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.UPLOAD_FILE.UPLOAD_FAIL;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.UPLOAD_FILE.UPLOAD_FAIL.message;
+            res.send(responseObj);
+            return;
+        });
+    });
+};
+
+/*
+ * get product image by productid
+ * */
+var getImageByProduct = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+        var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
+
+        if(productID <= 0){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.PRODUCT_INVALID;
+            responseObj.errorsObject = message.PRODUCT.PRODUCT_INVALID;
+            responseObj.errorsMessage = message.PRODUCT.PRODUCT_INVALID.message;
+            res.send(responseObj);
+            return;
+        }
+
+        var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+        var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
+        productImageDao.getImageByProduct(categoryID, pageNum, perPage).then(function(data){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
+/*
+ * delete product image
+ * @Prepare : checkPermissionUserAndCategory
+ * */
+var deleteProductImage = function(req, res) {
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var productImageID = isNaN(req.body.productImageID)? 0 : parseInt(req.body.productImageID);
+    if(productImageID <= 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.PRODUCT_IMAGE_INVALID;
+        responseObj.errorsObject = message.PRODUCT.PRODUCT_INVALID_IMAGE;
+        responseObj.errorsMessage = message.PRODUCT.PRODUCT_INVALID_IMAGE.message;
+        res.send(responseObj);
+        return;
+    }
+
+    productImageDao.update({"isActive" : 0}, Constant.TABLE_NAME_DB.SHOP_PRODUCT_IMAGE.NAME_FIELD_ID, productImageID).then(function (result) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = result;
+        res.send(responseObj);
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+
+};
+
 /*Exports*/
 module.exports = {
     checkPermissionUserAndCategory : checkPermissionUserAndCategory,
@@ -371,5 +521,8 @@ module.exports = {
     getProductDetail : getProductDetail,
     getProductByCategory : getProductByCategory,
     deleteProduct : deleteProduct,
-    updateProduct : updateProduct
+    updateProduct : updateProduct,
+    createProductImage : createProductImage,
+    getImageByProduct : getImageByProduct,
+    deleteProductImage : deleteProductImage
 }
