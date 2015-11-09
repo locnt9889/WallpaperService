@@ -6,6 +6,7 @@ var Q = require("q");
 var multiparty = require('multiparty');
 var fs = require('fs');
 var path = require("path");
+var mkdirp = require("mkdirp");
 
 var Constant = require("../helpers/Constant");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
