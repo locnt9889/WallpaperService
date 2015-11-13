@@ -36,7 +36,7 @@ MysqlHelper.prototype.getProductByCategory = function(categoryID, pageNum, perPa
         responsePagingDto.totalPages = totalPages;
 
         var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.GET_PRODUCT_BY_CATEGORY;
-        var params = [categoryID, start, perPage];
+        var params = [categoryID, categoryID, start, perPage];
         productDao.queryExecute(sql, params).then(function(data1){
             responsePagingDto.items = data1;
 

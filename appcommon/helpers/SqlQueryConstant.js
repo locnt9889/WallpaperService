@@ -74,7 +74,7 @@ var CATEGORY_SQL_SCRIPT = {
 
 var PRODUCT_SQL_SCRIPT = {
     CHECK_PRODUCT_NAME_OF_CATEGORY_EXIST : "SELECT * FROM Shop_Product WHERE categoryID = ? AND productName = ?",
-    GET_PRODUCT_BY_CATEGORY : "SELECT * FROM Shop_Product WHERE categoryID = ? AND isActive= 1 LIMIT ?, ?",
+    GET_PRODUCT_BY_CATEGORY : "SELECT *, (SELECT shopID FROM Shop_Categories WHERE categoryID = ?) as shopID FROM Shop_Product WHERE categoryID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_PRODUCT_BY_CATEGORY : "SELECT COUNT(productID) as totalItems FROM Shop_Product WHERE categoryID = ? AND isActive= 1",
     GET_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
