@@ -25,7 +25,7 @@ var queryExecute = function(sql, params) {
     var deferred = Q.defer();
     pool.getConnection(function(err,connection){
         if (err) {
-            connection.release();
+            //connection.release();
             deferred.reject(err);
         }else{
             connection.query(sql, params, function(err,rows){

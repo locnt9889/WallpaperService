@@ -37,6 +37,10 @@ var checkPermissionUserAndCategory = function(req, res, next) {
 
     var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
 
+    if(productID == undefined){
+        productID = req.query.productID;
+    }
+
     if(productID <= 0){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.SHOP_INVALID;
         responseObj.errorsObject = message.SHOP.SHOP_INVALID;
