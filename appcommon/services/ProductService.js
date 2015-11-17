@@ -37,8 +37,8 @@ var checkPermissionUserAndCategory = function(req, res, next) {
 
     var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
 
-    if(productID == undefined){
-        productID = req.query.productID;
+    if(productID == 0){
+        productID = isNaN(req.query.productID)? 0 : parseInt(req.query.productID);
     }
 
     if(productID <= 0){
