@@ -4,10 +4,19 @@
 
 var mysql     =    require('mysql');
 
-var DB_CONFIG = {
+/*var DB_CONFIG = {
     connectionLimit : 100, //important
     host     : '104.236.31.239',
     user     : 'devchomoi',
+    password : 'Devchomoi2015',
+    database : 'chomoidb',
+    debug    :  false
+}*/
+
+var DB_CONFIG = {
+    connectionLimit : 100, //important
+    host     : 'localhost',
+    user     : 'root',
     password : 'Devchomoi2015',
     database : 'chomoidb',
     debug    :  false
