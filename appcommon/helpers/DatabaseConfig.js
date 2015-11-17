@@ -15,7 +15,7 @@ var mysql     =    require('mysql');
 
 var DB_CONFIG = {
     connectionLimit : 100, //important
-    host     : 'localhost',
+    host     : 'localhost',//128.199.72.197
     user     : 'root',
     password : 'Devchomoi2015',
     database : 'chomoidb',
