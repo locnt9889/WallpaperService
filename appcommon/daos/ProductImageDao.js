@@ -45,5 +45,11 @@ MysqlHelper.prototype.getImageByProduct = function(productID, pageNum, perPage){
     return def.promise;
 };
 
+MysqlHelper.prototype.getAllImageByProduct = function(productID){
+    var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.GET_ALL_IMAGE_BY_PRODUCT;
+    var params = [productID];
+    return productImageDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = productImageDao;

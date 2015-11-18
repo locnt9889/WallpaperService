@@ -78,6 +78,7 @@ var PRODUCT_SQL_SCRIPT = {
     COUNT_PRODUCT_BY_CATEGORY : "SELECT COUNT(productID) as totalItems FROM Shop_Product WHERE categoryID = ? AND isActive= 1",
     GET_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
+    GET_ALL_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1"
 }
 
 /*Exports*/

@@ -198,9 +198,25 @@ var getProductDetail = function(req, res) {
     }
 
     productDao.findOneById(Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function (result) {
-        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        //responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = result;
-        res.send(responseObj);
+
+        if(result.length > 0){
+            //to do
+            productImageDao.getAllImageByProduct(productID).then(function(data){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                result[0].images = data;
+                responseObj.results = result;
+                res.send(responseObj);
+            }, function(err){
+                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                responseObj.errorsObject = err;
+                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                res.send(responseObj);
+            });
+        }else{
+            res.send(responseObj);
+        }
     }, function (err) {
         responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
         responseObj.errorsObject = err;
@@ -473,7 +489,7 @@ var getImageByProduct = function(req, res){
         var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
         var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
 
-        productImageDao.getImageByProduct(categoryID, pageNum, perPage).then(function(data){
+        productImageDao.getImageByProduct(productID, pageNum, perPage).then(function(data){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
             responseObj.results = data;
             res.send(responseObj);
