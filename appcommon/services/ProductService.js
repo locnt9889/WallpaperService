@@ -444,7 +444,8 @@ var createProductImage = function(req, res) {
 
             productImageDao.addNew(productImage).then(function(result){
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                responseObj.results = result;
+                productImage.id = result.insertId;
+                responseObj.results = productImage;
                 res.send(responseObj);
             },function(err){
                 responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
