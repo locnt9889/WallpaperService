@@ -59,6 +59,11 @@ router.get('/view-product-image/:file', function (req, res) {
 });
 
 /// Show files
+router.get('/view-image-avatar-product', function (req, res) {
+    fileService.viewImageAvatarProduct(req, res);
+});
+
+/// Show files
 router.get('/download-clone/', function (req, res) {
     //fileService.viewFile(req, res, Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SHOP_COVER);
 

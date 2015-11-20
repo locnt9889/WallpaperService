@@ -10,6 +10,7 @@ var mkdirp = require("mkdirp");
 
 var Constant = require("../helpers/Constant");
 var uploadFileHelper = require("../helpers/UploadFileHelper");
+var productImageDao = require("../daos/ProductImageDao");
 
 function uploadFile(req, res) {
 
@@ -66,6 +67,41 @@ function viewProductImageFile(req, res) {
     });
 }
 
+function viewImageAvatarProduct (req, res){
+    var productID = req.query.productID ? req.query.productID : 0;
+
+    productImageDao.getAllImageByProduct(productID).then(function(data){
+        if(data.length == 0){
+            res.writeHead(404);
+            res.end();
+        }else{
+            var file = data[0].imageURLFull;
+            var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
+            fs.exists(fullFile, function(result){
+                if(result){
+                    res.sendfile(path.resolve(fullFile));
+                }else{
+                    res.writeHead(404);
+                    res.end();
+                }
+            })
+        }
+    }, function(err){
+        res.writeHead(404);
+        res.end();
+    });
+
+    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
+    fs.exists(fullFile, function(result){
+        if(result){
+            res.sendfile(path.resolve(fullFile));
+        }else{
+            res.writeHead(404);
+            res.end();
+        }
+    });
+}
+
 function createFolderIfNotExits(folder_path){
     fs.exists(folder_path, function(result){
         if(!result){
@@ -85,6 +121,7 @@ module.exports = {
     uploadFile : uploadFile,
     viewFile : viewFile,
     viewProductImageFile : viewProductImageFile,
-    createFolderIfNotExits : createFolderIfNotExits
+    createFolderIfNotExits : createFolderIfNotExits,
+    viewImageAvatarProduct : viewImageAvatarProduct
 
 }
