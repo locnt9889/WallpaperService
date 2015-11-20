@@ -15,7 +15,7 @@ MysqlHelper.prototype.getImageByProduct = function(productID, pageNum, perPage){
     var start = perPage * (pageNum-1);
 
     var sqlCount = SqlQueryConstant.PRODUCT_SQL_SCRIPT.COUNT_GET_IMAGE_BY_PRODUCT;
-    var paramCount = [categoryID];
+    var paramCount = [productID];
     productImageDao.queryExecute(sqlCount, paramCount).then(function(data){
         var responsePagingDto = new ResponsePagingDto();
         var totalItems = data[0].totalItems;
@@ -30,7 +30,7 @@ MysqlHelper.prototype.getImageByProduct = function(productID, pageNum, perPage){
         responsePagingDto.totalPages = totalPages;
 
         var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.GET_IMAGE_BY_PRODUCT;
-        var params = [categoryID, start, perPage];
+        var params = [productID, start, perPage];
         productImageDao.queryExecute(sql, params).then(function(data1){
             responsePagingDto.items = data1;
 
