@@ -90,16 +90,6 @@ function viewImageAvatarProduct (req, res){
         res.writeHead(404);
         res.end();
     });
-
-    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-    fs.exists(fullFile, function(result){
-        if(result){
-            res.sendfile(path.resolve(fullFile));
-        }else{
-            res.writeHead(404);
-            res.end();
-        }
-    });
 }
 
 function createFolderIfNotExits(folder_path){
