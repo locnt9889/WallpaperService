@@ -44,7 +44,7 @@ router.post('/getImageByProduct', [accessTokenService.checkAccessToken, function
 }]);
 
 /* POST get Image By Product */
-router.post('/deleteProductImage', [accessTokenService.checkAccessToken, productService.checkPermissionUserAndCategory, function(req, res, next) {
+router.post('/deleteProductImage', [accessTokenService.checkAccessToken, function(req, res, next) {
     productService.deleteProductImage(req, res);
 }]);
 
