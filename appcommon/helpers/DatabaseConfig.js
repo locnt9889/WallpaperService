@@ -14,7 +14,7 @@ var mysql     =    require('mysql');
 }*/
 
 var DB_CONFIG = {
-    connectionLimit : 100, //important
+    connectionLimit : 101, //important
     host     : 'localhost',//
    // port : 3306,
     user     : 'root',
