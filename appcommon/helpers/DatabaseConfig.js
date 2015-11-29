@@ -4,16 +4,16 @@
 
 var mysql     =    require('mysql');
 
-/*var DB_CONFIG = {
+var DB_CONFIG = {
     connectionLimit : 100, //important
     host     : '104.236.31.239',
     user     : 'devchomoi',
     password : 'Devchomoi2015',
     database : 'chomoidb',
     debug    :  false
-}*/
+}
 
-var DB_CONFIG = {
+/*var DB_CONFIG = {
     connectionLimit : 101, //important
     host     : 'localhost',//188.166.237.78
    // port : 3306,
@@ -21,6 +21,6 @@ var DB_CONFIG = {
     password : 'Devchomoi2015',
     database : 'chomoidb',
     debug    :  false
-}
+}*/
 
 exports.pool = mysql.createPool(DB_CONFIG);
