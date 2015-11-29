@@ -68,13 +68,13 @@ var SHOP_SQL_SCRIPT = {
 
 var CATEGORY_SQL_SCRIPT = {
     CHECK_CATEGORY_NAME_OF_SHOP_EXIST : "SELECT * FROM Shop_Categories WHERE shopID = ? AND categoryName = ?",
-    GET_CATEGORY_BY_SHOP : "SELECT sc.*,(SELECT COUNT(sp.productID) FROM Shop_Product sp WHERE sp.categoryID = sc.categoryID AND sp.isActive= 1) productCount FROM Shop_Categories sc WHERE shopID = ? AND  isActive= 1",
+    GET_CATEGORY_BY_SHOP : "SELECT sc.*,(SELECT COUNT(sp.productID) FROM Shop_Product sp WHERE sp.categoryID = sc.categoryID AND sp.isActive= 1) productCount FROM Shop_Categories sc WHERE shopID = ? AND  isActive= 1 ORDER BY sc.* DESC",
     CHECK_PERMISSION_USER_AND_CATEGORY : "SELECT * FROM Shop_Categories sc INNER JOIN Shop sh ON sc.shopID = sh.shopID WHERE sh.userID = ? and sc.categoryID = ?"
 }
 
 var PRODUCT_SQL_SCRIPT = {
     CHECK_PRODUCT_NAME_OF_CATEGORY_EXIST : "SELECT * FROM Shop_Product WHERE categoryID = ? AND productName = ?",
-    GET_PRODUCT_BY_CATEGORY : "SELECT *, (SELECT shopID FROM Shop_Categories WHERE categoryID = ?) as shopID FROM Shop_Product WHERE categoryID = ? AND isActive= 1 LIMIT ?, ?",
+    GET_PRODUCT_BY_CATEGORY : "SELECT *, (SELECT shopID FROM Shop_Categories WHERE categoryID = ?) as shopID FROM Shop_Product WHERE categoryID = ? AND isActive= 1 ORDER BY productID DESC LIMIT ?, ?",
     COUNT_PRODUCT_BY_CATEGORY : "SELECT COUNT(productID) as totalItems FROM Shop_Product WHERE categoryID = ? AND isActive= 1",
     GET_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
