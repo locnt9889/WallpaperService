@@ -55,6 +55,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_District",
         NAME_FIELD_ID : "id"
     },
+    SHOP_ADDRESS : {
+        NAME : "Shop_Address",
+        NAME_FIELD_ID : "id"
+    },
     SHOP_CATEGORY : {
         NAME : "Shop_Categories",
         NAME_FIELD_ID : "categoryID"
@@ -149,6 +153,10 @@ var CODE_STATUS = {
         CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST : 1702,
         PRODUCT_INVALID : 1703,
         PRODUCT_IMAGE_INVALID : 1704
+    },
+    ADDRESS : {
+        CREATE_SHOP_ADDRESS_EMPTY_FIELD: 1801,
+        SHOP_ADDRESS_INVALID : 1802
     }
 }
 

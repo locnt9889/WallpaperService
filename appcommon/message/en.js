@@ -159,6 +159,17 @@ var CATEGORY = {
     }
 }
 
+var ADDRESS = {
+    CREATE_SHOP_ADDRESS_EMPTY_FIELD: {
+        code: 1801,
+        message: "Error empty with parameter required!"
+    },
+    SHOP_ADDRESS_INVALID : {
+        code: 1802,
+        message: "Shop address is invalid"
+    }
+}
+
 var PRODUCT = {
     CREATE_PRODUCT_EMPTY_FIELD: {
         code: 1701,
@@ -190,5 +201,6 @@ module.exports = {
     USER_CONTACT : USER_CONTACT,
     SHOP : SHOP,
     CATEGORY : CATEGORY,
-    PRODUCT : PRODUCT
+    PRODUCT : PRODUCT,
+    ADDRESS : ADDRESS
 }

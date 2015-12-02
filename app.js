@@ -73,6 +73,10 @@ app.use('/api/category', categoryCtrl);
 var productCtrl = require("./appcommon/controllers/ProductCtrl");
 app.use('/api/product', productCtrl);
 
+//shop address controller for api
+var shopAddressCtrl = require("./appcommon/controllers/ShopAddressCtrl");
+app.use('/api/shop-address', shopAddressCtrl);
+
 /*
  * END set config mapping url
  */
