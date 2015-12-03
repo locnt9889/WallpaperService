@@ -9,5 +9,11 @@ var Constant = require("../helpers/Constant");
 var shopAddressDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP_ADDRESS.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
+MysqlHelper.prototype.getAddressByShop = function(shopID){
+    var sql = SqlQueryConstant.SHOP_ADDRESS_SQL_SCRIPT.GET_ADDRESS_BY_SHOP;
+    var params = [shopID];
+    return shopAddressDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = shopAddressDao;
