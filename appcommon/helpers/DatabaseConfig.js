@@ -7,8 +7,10 @@ var mysql     =    require('mysql');
 var DB_CONFIG = {
     connectionLimit : 100, //important
     //host     : '104.236.31.239',
-    host       : '188.166.237.78',
-    user     : 'devchomoi',
+    //host       : '188.166.237.78',
+    host : 'localhost',
+    //user     : 'devchomoi',
+    user : 'root',
     password : 'Devchomoi2015',
     database : 'chomoidb',
     debug    :  false
