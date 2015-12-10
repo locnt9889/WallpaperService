@@ -9,7 +9,7 @@ var DB_CONFIG = {
     connectionLimit : 100, //important
     host : 'localhost',
     user : 'root',
-    password : 'Devchomoi2015',
+    password : 'Chomoi2015',
     database : 'chomoidb',
     debug    :  false
 }
