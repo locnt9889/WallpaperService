@@ -615,6 +615,91 @@ var updateShopInfo = function(req, res){
     }
 };
 
+var search = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var provinceID = isNaN(req.body.provinceID) ? 0 : parseInt(req.body.provinceID);
+    var districtID = isNaN(req.body.districtID) ? 0 : parseInt(req.body.districtID);
+    var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
+    var shopTypeChild = isNaN(req.body.shopTypeChild) ? 0 : parseInt(req.body.shopTypeChild);
+
+    //build sql
+    var sql_getShopByDistrict = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID = " + districtID;
+    var sql_getShopByProvince = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID IN (SELECT DISTINCT district_id FROM Data_District WHERE province_id = "+ provinceID +")";
+
+    var sql_getShopByTypeChild = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID = " + shopTypeChild;
+    var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
+
+    var sql_search = "SELECT * FROM Shop WHERE isActive = 1";
+    if(districtID > 0){
+        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByDistrict +")";
+    }else{
+        if(provinceID > 0){
+            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByProvince +" )";
+        }
+    }
+
+    if(shopTypeChild > 0){
+        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByTypeChild +")";
+    }else{
+        if(shopTypeParent > 0){
+            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByTypeParent +" )";
+        }
+    }
+
+    shopDao.queryExecute(sql_search,[]).then(function(data){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+        res.send(responseObj);
+    }, function(err){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
+/**
+ * get distance of 2 location
+ * @param type latUser
+ * @param type longUser
+ * @param type shopTypeChild
+ * @param type shopTypeParent
+ * @param type distMin
+ * @return double (mét)
+ * round(acos(sin($lat1*pi()/180)*sin($lat2*pi()/180) + cos($lat1*pi()/180)*cos($lat2*PI()/180)*cos($long2*PI()/180-$long1*pi()/180)) * 6371000, 2)
+ */
+var getShopNear = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var latUser = isNaN(req.body.latUser) ? 0 : parseFloat(req.body.latUser);
+    var longUser = isNaN(req.body.longUser) ? 0 : parseFloat(req.body.longUser);
+    var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
+    var shopTypeChild = isNaN(req.body.shopTypeChild) ? 0 : parseInt(req.body.shopTypeChild);
+
+    var distanceMax = isNaN(req.body.distanceMax) ? 0 : parseFloat(req.body.distanceMax);
+
+    //build sql
+
+    shopDao.getShopNearWithDistance(latUser, longUser, distanceMax, shopTypeChild, shopTypeParent).then(function(data){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+
+        res.send(responseObj);
+    }, function(err){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     createShop : createShop,
@@ -627,5 +712,10 @@ module.exports = {
     updateCoverOfShop : updateCoverOfShop,
     deleteShop : deleteShop,
     getShopDetail : getShopDetail,
-    updateShopInfo : updateShopInfo
+    updateShopInfo : updateShopInfo,
+    search : search,
+    getShopNear : getShopNear
 }
+
+
+

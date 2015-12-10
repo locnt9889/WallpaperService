@@ -61,4 +61,14 @@ router.post('/updateShopInfo', [accessTokenService.checkAccessToken, function(re
     shopService.updateShopInfo(req, res);
 }]);
 
+/* POST search shop info*/
+router.post('/search', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.search(req, res);
+}]);
+
+/* POST search shop info*/
+router.post('/getShopNear', [accessTokenService.checkAccessToken, function(req, res, next) {
+    shopService.getShopNear(req, res);
+}]);
+
 module.exports = router;
