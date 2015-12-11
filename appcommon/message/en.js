@@ -189,6 +189,29 @@ var PRODUCT = {
     }
 }
 
+var USER_FAVORITE = {
+    EXECUTE_ERROR_ACTION: {
+        code: 1901,
+        message: "Action is incorrect!"
+    },
+    EXECUTE_ERROR_TYPE_ITEM : {
+        code: 1902,
+        message: "Item Type is incorrect"
+    },
+    ITEM_INVALID : {
+        code: 1903,
+        message: "Item is invalid"
+    },
+    ADD_ITEM_EXISTED : {
+        code: 1904,
+        message: "Can not add favorite with existed item!"
+    },
+    REMOVE_ITEM_NOT_EXISTED : {
+        code: 1905,
+        message: "Can not remove favorite with item which is not existed!"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
@@ -202,5 +225,6 @@ module.exports = {
     SHOP : SHOP,
     CATEGORY : CATEGORY,
     PRODUCT : PRODUCT,
-    ADDRESS : ADDRESS
+    ADDRESS : ADDRESS,
+    USER_FAVORITE : USER_FAVORITE
 }

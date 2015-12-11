@@ -71,6 +71,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_Product_Images",
         NAME_FIELD_ID : "id"
     },
+    USER_FAVORITE_ITEMS : {
+        NAME : "User_Favorite_Items",
+        NAME_FIELD_ID : "id"
+    },
     USER_DEVICE_TOKEN : "User_Device_Token",
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
@@ -157,6 +161,13 @@ var CODE_STATUS = {
     ADDRESS : {
         CREATE_SHOP_ADDRESS_EMPTY_FIELD: 1801,
         SHOP_ADDRESS_INVALID : 1802
+    },
+    USER_FAVORITE : {
+        EXECUTE_ERROR_ACTION: 1901,
+        EXECUTE_ERROR_TYPE_ITEM : 1902,
+        ITEM_INVALID : 1903,
+        ADD_ITEM_EXISTED : 1904,
+        REMOVE_ITEM_NOT_EXISTED : 1905
     }
 }
 

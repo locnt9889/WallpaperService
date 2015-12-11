@@ -77,6 +77,10 @@ app.use('/api/product', productCtrl);
 var shopAddressCtrl = require("./appcommon/controllers/ShopAddressCtrl");
 app.use('/api/shop-address', shopAddressCtrl);
 
+//user favorite controller for api
+var userFavoriteCtrl = require("./appcommon/controllers/UserFavoriteCtrl");
+app.use('/api/user-favorite', userFavoriteCtrl);
+
 /*
  * END set config mapping url
  */
