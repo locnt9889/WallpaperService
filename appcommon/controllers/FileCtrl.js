@@ -59,6 +59,11 @@ router.get('/view-product-image/:file', function (req, res) {
 });
 
 /// Show files
+router.get('/view-comment-image/:file', function (req, res) {
+    fileService.viewCommentImageFile(req, res);
+});
+
+/// Show files
 router.get('/view-image-avatar-product', function (req, res) {
     fileService.viewImageAvatarProduct(req, res);
 });

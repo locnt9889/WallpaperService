@@ -92,6 +92,21 @@ function viewImageAvatarProduct (req, res){
     });
 }
 
+function viewCommentImageFile(req, res) {
+    var file = req.params.file;
+    var productID = req.query.productID ? req.query.productID : 0;
+
+    var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SUB_COMMENT_IMAGE + file;
+    fs.exists(fullFile, function(result){
+        if(result){
+            res.sendfile(path.resolve(fullFile));
+        }else{
+            res.writeHead(404);
+            res.end();
+        }
+    });
+}
+
 function createFolderIfNotExits(folder_path){
     fs.exists(folder_path, function(result){
         if(!result){
@@ -112,6 +127,7 @@ module.exports = {
     viewFile : viewFile,
     viewProductImageFile : viewProductImageFile,
     createFolderIfNotExits : createFolderIfNotExits,
-    viewImageAvatarProduct : viewImageAvatarProduct
+    viewImageAvatarProduct : viewImageAvatarProduct,
+    viewCommentImageFile : viewCommentImageFile
 
 }

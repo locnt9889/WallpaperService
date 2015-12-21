@@ -21,9 +21,9 @@ MysqlHelper.prototype.getCategoryByShop = function(shopID){
     return categoryDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.checkPermissionUserAndCategory = function(categoryID, name){
+MysqlHelper.prototype.checkPermissionUserAndCategory = function(userID, categoryID){
     var sql = SqlQueryConstant.CATEGORY_SQL_SCRIPT.CHECK_PERMISSION_USER_AND_CATEGORY
-    var params = [categoryID, name];
+    var params = [userID, categoryID];
     return categoryDao.queryExecute(sql, params);
 };
 

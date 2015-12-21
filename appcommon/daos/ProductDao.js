@@ -52,5 +52,11 @@ MysqlHelper.prototype.getProductByCategory = function(categoryID, pageNum, perPa
 
 };
 
+MysqlHelper.prototype.checkIsShopCommentProduct = function(userID, productID){
+    var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.CHECK_PERMISSION_USER_AND_PRODUCT;
+    var params = [userID, productID];
+    return productDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = productDao;

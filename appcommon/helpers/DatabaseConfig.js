@@ -12,7 +12,7 @@ var DB_CONFIG = {
     password : 'Chomoi2015',
     database : 'chomoidb',
     debug    :  false
-}
+};
 
 
 //server 104.236.31.239

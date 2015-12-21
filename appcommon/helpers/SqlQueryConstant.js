@@ -82,13 +82,22 @@ var PRODUCT_SQL_SCRIPT = {
     COUNT_PRODUCT_BY_CATEGORY : "SELECT COUNT(productID) as totalItems FROM Shop_Product WHERE categoryID = ? AND isActive= 1",
     GET_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
-    GET_ALL_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1"
+    GET_ALL_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
+    CHECK_PERMISSION_USER_AND_PRODUCT : "SELECT * FROM Shop_Categories sc INNER JOIN Shop sh ON sc.shopID = sh.shopID INNER JOIN Shop_Product sp ON sp.categoryID = sc.categoryID WHERE sh.userID = ? and sp.productID = ?"
 }
 
 var USER_FAVORITE_SQL_SCRIPT = {
     CHECK_FAVORITE_USER_AND_ITEM : "SELECT * FROM User_Favorite_Items WHERE userID = ? AND favoriteItemID = ? AND favoriteType = ?",
     GET_LIST_FAVORITE_COUNT : "SELECT COUNT(id) as totalItems FROM User_Favorite_Items WHERE userID = ?",
     GET_LIST_FAVORITE : "SELECT * FROM User_Favorite_Items WHERE userID = ? #ext LIMIT ?, ?"
+}
+
+var COMMENT_SQL_SCRIPT = {
+    COUNT_GET_COMMENT_BY_PRODUCT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE productID = ? AND isActive = 1",
+    GET_COMMENT_BY_PRODUCT : "SELECT * FROM Shop_Product_Comments WHERE productID = ? AND isActive = 1 LIMIT ?, ?",
+
+    COUNT_GET_COMMENT_BY_PARENT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
+    GET_COMMENT_BY_PARENT : "SELECT * FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1 LIMIT ?, ?"
 }
 
 /*Exports*/
@@ -102,5 +111,6 @@ module.exports = {
     CATEGORY_SQL_SCRIPT : CATEGORY_SQL_SCRIPT,
     PRODUCT_SQL_SCRIPT : PRODUCT_SQL_SCRIPT,
     SHOP_ADDRESS_SQL_SCRIPT : SHOP_ADDRESS_SQL_SCRIPT,
-    USER_FAVORITE_SQL_SCRIPT : USER_FAVORITE_SQL_SCRIPT
+    USER_FAVORITE_SQL_SCRIPT : USER_FAVORITE_SQL_SCRIPT,
+    COMMENT_SQL_SCRIPT : COMMENT_SQL_SCRIPT
 }

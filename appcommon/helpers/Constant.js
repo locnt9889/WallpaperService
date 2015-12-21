@@ -71,6 +71,10 @@ var TABLE_NAME_DB = {
         NAME : "Shop_Product_Images",
         NAME_FIELD_ID : "id"
     },
+    SHOP_PRODUCT_COMMENTS : {
+        NAME : "Shop_Product_Comments",
+        NAME_FIELD_ID : "commentID"
+    },
     USER_FAVORITE_ITEMS : {
         NAME : "User_Favorite_Items",
         NAME_FIELD_ID : "id"
@@ -97,8 +101,16 @@ var UPLOAD_FILE_CONFIG = {
         SHOP_AVATAR : "/Images/Shop/Avatars/",
         SHOP_COVER : "/Images/Shop/Covers/",
         CATEGORY_COVER : "/Images/Category/Covers/",
-        PRODUCT_IMAGE : "/Images/Product/"
+        PRODUCT_IMAGE : "/Images/Product/",
+        SUB_COMMENT_IMAGE : "/Comment/"
     }
+}
+
+var COMMENT_TYPE = {
+    TEXT : "TEXT",
+    SHOP : "SHOP",
+    PRODUCT : "PRODUCT",
+    IMAGE : "IMAGE"
 }
 
 var CODE_STATUS = {
@@ -168,6 +180,13 @@ var CODE_STATUS = {
         ITEM_INVALID : 1903,
         ADD_ITEM_EXISTED : 1904,
         REMOVE_ITEM_NOT_EXISTED : 1905
+    },
+    PRODUCT_COMMENT : {
+        PRODUCT_COMMENT_INVALID : 2001,
+        PRODUCT_COMMENT_PARENT_INVALID : 2002,
+        EDIT_COMMENT_PERMISSION_DENIED : 2003,
+        DELETE_COMMENT_PERMISSION_DENIED : 2004,
+        EDIT_COMMENT_TYPE_NOT_TEXT : 2005
     }
 }
 
@@ -216,6 +235,6 @@ module.exports = {
     USER_CONTACT_STATUS_VALUE : USER_CONTACT_STATUS_VALUE,
     USER_CONTACT_PARAM_KEY : USER_CONTACT_PARAM_KEY,
     NOTIFICATION_TYPE : NOTIFICATION_TYPE,
-    SHOP_STATUS_VALUE : SHOP_STATUS_VALUE
-
+    SHOP_STATUS_VALUE : SHOP_STATUS_VALUE,
+    COMMENT_TYPE : COMMENT_TYPE
 }

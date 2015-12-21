@@ -212,6 +212,29 @@ var USER_FAVORITE = {
     }
 }
 
+var PRODUCT_COMMENT = {
+    PRODUCT_COMMENT_INVALID : {
+        code: 2001,
+        message: "Comment is invalid"
+    },
+    PRODUCT_COMMENT_PARENT_INVALID : {
+        code: 2002,
+        message: "Comment parent is invalid"
+    },
+    EDIT_COMMENT_PERMISSION_DENIED : {
+        code: 2003,
+        message: "You can't EDIT this comment because permission denied!"
+    },
+    DELETE_COMMENT_PERMISSION_DENIED : {
+        code: 2004,
+        message: "You can't DELETE this comment because permission denied!"
+    },
+    EDIT_COMMENT_TYPE_NOT_TEXT : {
+        code : 2005,
+        message : "You can not edit comment is not TEXT type!"
+    }
+}
+
 module.exports = {
     SUCCESS : SUCCESS,
     FAIL : FAIL,
@@ -226,5 +249,6 @@ module.exports = {
     CATEGORY : CATEGORY,
     PRODUCT : PRODUCT,
     ADDRESS : ADDRESS,
-    USER_FAVORITE : USER_FAVORITE
+    USER_FAVORITE : USER_FAVORITE,
+    PRODUCT_COMMENT : PRODUCT_COMMENT
 }
