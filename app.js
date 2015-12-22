@@ -37,53 +37,10 @@ app.all("/demo/Require*", PersonAccessService.checkAccessToken);
 /*
  * START set config mapping url
  */
-//person controller for demo
-var personCtrl = require("./appcommon/controllers/PersonCtrl");
-app.use('/demo/person', personCtrl);
 
 //upload file controller for demo
 var fileCtrl = require("./appcommon/controllers/FileCtrl");
-app.use('/api/file', fileCtrl);
-
-//user controller for api
-var userCtrl = require("./appcommon/controllers/UserCtrl");
-app.use('/api/user', userCtrl);
-
-//user contact controller for api
-var userContactCtrl = require("./appcommon/controllers/UserContactCtrl");
-app.use('/api/userContact', userContactCtrl);
-
-//location controller for api
-var locationCtrl = require("./appcommon/controllers/LocationCtrl");
-app.use('/api/location', locationCtrl);
-
-//shoptype controller for api
-var shopTypeCtrl = require("./appcommon/controllers/ShopTypeCtrl");
-app.use('/api/shop-type', shopTypeCtrl);
-
-//shop controller for api
-var shopCtrl = require("./appcommon/controllers/ShopCtrl");
-app.use('/api/shop', shopCtrl);
-
-//category controller for api
-var categoryCtrl = require("./appcommon/controllers/CategoryCtrl");
-app.use('/api/category', categoryCtrl);
-
-//product controller for api
-var productCtrl = require("./appcommon/controllers/ProductCtrl");
-app.use('/api/product', productCtrl);
-
-//shop address controller for api
-var shopAddressCtrl = require("./appcommon/controllers/ShopAddressCtrl");
-app.use('/api/shop-address', shopAddressCtrl);
-
-//user favorite controller for api
-var userFavoriteCtrl = require("./appcommon/controllers/UserFavoriteCtrl");
-app.use('/api/user-favorite', userFavoriteCtrl);
-
-//comment controller for api
-var productCommentCtrl = require("./appcommon/controllers/ProductCommentCtrl");
-app.use('/api/product-comment', productCommentCtrl);
+app.use('/rest/file', fileCtrl);
 
 /*
  * END set config mapping url
