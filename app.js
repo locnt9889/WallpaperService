@@ -26,21 +26,16 @@ app.use('/', routes);
 app.use('/users', users);
 
 /*
- * START Set Action check authen for request
- */
-var PersonAccessService = require("./appcommon/services/AccessService");
-app.all("/demo/Require*", PersonAccessService.checkAccessToken);
-/*
- * END Set Action check authen for request
- */
-
-/*
  * START set config mapping url
  */
 
 //upload file controller for demo
-var fileCtrl = require("./appcommon/controllers/FileCtrl");
-app.use('/rest/file', fileCtrl);
+var categoryCtrl = require("./appcommon/controllers/CategoryCtrl");
+app.use('/rest/category', categoryCtrl);
+
+//upload file controller for demo
+var imageCtrl = require("./appcommon/controllers/ImageCtrl");
+app.use('/rest/image', imageCtrl);
 
 /*
  * END set config mapping url

@@ -3,15 +3,10 @@
  */
 
 function Category(){
-    this.categoryID = 0;
-    this.shopID = 0;
-    this.categoryName = "";
-    this.categoryDesc = "";
-    this.isActive = 1;
-    this.createdDate =  new Date();
-    this.modifiedDate = new Date();
-    this.isShow = 1;
-    this.coverImage = "";
+    this.id = 0;
+    this.name = 0;
+    this.name_url = "";
+    this.other = "";
 };
 
 module.exports = Category;

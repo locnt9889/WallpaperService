@@ -3,9 +3,16 @@
  */
 
 var TABLE_NAME_DB = {
-    USER : {
-        NAME : "User",
-        NAME_FIELD_ID : "userID"
+    CATEGORY : {
+        NAME : "category",
+        NAME_FIELD_ID : "id"
+    },
+    IMAGE : {
+        NAME : "image2",
+        NAME_FIELD_ID : "id",
+        NAME_FIELD_CATEGORY_ID : "category_id",
+        NAME_FIELD_NAME : "name",
+        NAME_FIELD_COUNT_VIEW : "count_view"
     }
 }
 
@@ -15,15 +22,25 @@ var CODE_STATUS = {
     DB_EXECUTE_ERROR : 2,
 
     CATEGORY : {
-        CREATE_CATEGORY_EMPTY_FIELD: 1601,
-        CREATE_CATEGORY_NAME_OF_SHOP_EXIST : 1602,
-        CATEGORY_INVALID : 1603,
-        CATEGORY_UPDATE_USER_IS_DENIED : 1605
+        CATEGORY_INVALID : 1601,
+    },
+    IMAGE : {
+        IMAGE_INVALID : 1701,
+        SEARCH_IMAGE_ORDER_FIELD_INVALID: 1702,
+        SEARCH_IMAGE_ORDER_TYPE_INVALID: 1703
+    }
+}
+
+var ORDER_CONSTANT = {
+    ORDER_TYPE : {
+        DESC : "DESC",
+        ASC : "ASC"
     }
 }
 
 /*Exports*/
 module.exports = {
     TABLE_NAME_DB : TABLE_NAME_DB,
-    CODE_STATUS : CODE_STATUS
+    CODE_STATUS : CODE_STATUS,
+    ORDER_CONSTANT : ORDER_CONSTANT
 }

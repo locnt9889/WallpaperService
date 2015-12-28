@@ -5,11 +5,11 @@
 var express = require('express');
 var router = express.Router();
 
-var categoryService = require("../services/CategoryService");
+var imageService = require("../services/ImageService");
 
 /* POST find all category */
-router.get('/all', [function(req, res, next) {
-    categoryService.findAllCategory(req, res);
+router.get('/search', [function(req, res, next) {
+    imageService.findImage(req, res);
 }]);
 
 module.exports = router;
