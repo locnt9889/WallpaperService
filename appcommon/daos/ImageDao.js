@@ -14,7 +14,7 @@ var ORDERBY_PARAM_NAME = "#orderBy";
 var ORDERTYPE_PARAM_NAME = "#orderType";
 var LIKE_NAME_PARAM_NAME = "#name";
 
-MysqlHelper.prototype.getImageList = function(category,name, pageNum, perPage, orderBy, orderType){
+imageDao.getImageList = function(category,name, pageNum, perPage, orderBy, orderType){
     var def = Q.defer();
 
     orderBy = orderBy ? orderBy : "id";
@@ -84,6 +84,12 @@ MysqlHelper.prototype.getImageList = function(category,name, pageNum, perPage, o
     });
 
     return def.promise;
+};
+
+imageDao.executeIncrease= function(name_field, id){
+    var sql = SqlQueryConstant.IMAGE_SQL_SCRIPT.EXECUTE_INCREASE;
+    var params = [name_field, name_field, id];
+    return imageDao.queryExecute(sql, params);
 };
 
 /*Export*/

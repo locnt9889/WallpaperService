@@ -51,7 +51,50 @@ var findImage = function(req, res){
     });
 };
 
+var executeIncrease = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var id = isNaN(req.query.id) || !req.query.id ? 0 : parseInt(req.query.id);
+    var type = req.query.type ? req.query.type : "";
+
+    var name_field = "";
+
+    if(id == 0){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.IMAGE.IMAGE_INVALID;
+        responseObj.errorsObject = message.IMAGE.IMAGE_INVALID;
+        responseObj.errorsMessage = message.IMAGE.IMAGE_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    if(type == Constant.INCREASE_TYPE.VIEW){
+        name_field = Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_VIEW;
+    }else if(type == Constant.INCREASE_TYPE.DOWNLOAD){
+        name_field = Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_DOWNLOAD;
+    }else if(type == Constant.INCREASE_TYPE.FAVORITE){
+        name_field = Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_FAVORITE;
+    }else{
+        responseObj.statusErrorCode = Constant.CODE_STATUS.IMAGE.EXECUTE_TYPE_INVALID;
+        responseObj.errorsObject = message.IMAGE.EXECUTE_TYPE_INVALID;
+        responseObj.errorsMessage = message.IMAGE.EXECUTE_TYPE_INVALID.message;
+        res.send(responseObj);
+        return;
+    }
+
+    imageDao.executeIncrease(name_field, id).then(function (data) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+        res.send(responseObj);
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
-    findImage : findImage
+    findImage : findImage,
+    executeIncrease : executeIncrease
 }

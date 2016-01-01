@@ -12,7 +12,9 @@ var TABLE_NAME_DB = {
         NAME_FIELD_ID : "id",
         NAME_FIELD_CATEGORY_ID : "category_id",
         NAME_FIELD_NAME : "name",
-        NAME_FIELD_COUNT_VIEW : "count_view"
+        NAME_FIELD_COUNT_VIEW : "count_view",
+        NAME_FIELD_COUNT_DOWNLOAD : "count_download",
+        NAME_FIELD_COUNT_FAVORITE : "count_favorite"
     }
 }
 
@@ -27,7 +29,8 @@ var CODE_STATUS = {
     IMAGE : {
         IMAGE_INVALID : 1701,
         SEARCH_IMAGE_ORDER_FIELD_INVALID: 1702,
-        SEARCH_IMAGE_ORDER_TYPE_INVALID: 1703
+        SEARCH_IMAGE_ORDER_TYPE_INVALID: 1703,
+        EXECUTE_TYPE_INVALID: 1704
     }
 }
 
@@ -38,9 +41,16 @@ var ORDER_CONSTANT = {
     }
 }
 
+var INCREASE_TYPE = {
+    DOWNLOAD : "DOWNLOAD",
+    VIEW : "VIEW",
+    FAVORITE : "FAVORITE"
+}
+
 /*Exports*/
 module.exports = {
     TABLE_NAME_DB : TABLE_NAME_DB,
     CODE_STATUS : CODE_STATUS,
-    ORDER_CONSTANT : ORDER_CONSTANT
+    ORDER_CONSTANT : ORDER_CONSTANT,
+    INCREASE_TYPE : INCREASE_TYPE
 }

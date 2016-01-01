@@ -9,7 +9,7 @@ var Constant = require("../helpers/Constant");
 var categoryDao = new MysqlHelper(Constant.TABLE_NAME_DB.CATEGORY.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.findAllWithNumberImage= function(shopID, name){
+categoryDao.findAllWithNumberImage= function(shopID, name){
     var sql = SqlQueryConstant.CATEGORY_SQL_SCRIPT.FINDALL_WITH_NUMBER_IMAGE;
     var params = [shopID, name];
     return categoryDao.queryExecute(sql, params);

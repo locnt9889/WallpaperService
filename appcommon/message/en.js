@@ -34,7 +34,11 @@ var IMAGE = {
     },
     SEARCH_IMAGE_ORDER_TYPE_INVALID: {
         code: 1703,
-        message: "Search image order type is invalid.please input 'DESC' OR 'ASC' OR a empty field"
+        message: "Search image order type is invalid.please input DESC OR ASC OR a empty field"
+    },
+    EXECUTE_TYPE_INVALID: {
+        code: 1704,
+        message: "Execute type is invalid.please input VIEW OR DOWNLOAD OR FAVORITE"
     }
 }
 

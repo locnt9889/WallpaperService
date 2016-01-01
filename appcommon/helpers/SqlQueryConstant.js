@@ -20,7 +20,8 @@ var CATEGORY_SQL_SCRIPT = {
 
 var IMAGE_SQL_SCRIPT = {
     COUNT_GET_LIST_IMAGE : "SELECT COUNT(*) AS totalItems FROM image2 WHERE #category #name",
-    GET_LIST_IMAGE : "SELECT * FROM image2 WHERE #category #name ORDER BY #orderBy #orderType LIMIT ?, ?"
+    GET_LIST_IMAGE : "SELECT * FROM image2 WHERE #category #name ORDER BY #orderBy #orderType LIMIT ?, ?",
+    EXECUTE_INCREASE : "UPDATE image2 SET ?? = ?? + 1 WHERE id = ?"
 }
 /*Exports*/
 
