@@ -23,7 +23,8 @@ var findImage = function(req, res){
     var name = req.query.name ? req.query.name : "";
 
     if(orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_CATEGORY_ID && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_VIEW
-        && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_ID && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_NAME){
+        && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_ID && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_NAME
+        && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_FAVORITE && orderBy != Constant.TABLE_NAME_DB.IMAGE.NAME_FIELD_COUNT_DOWNLOAD){
         responseObj.statusErrorCode = Constant.CODE_STATUS.IMAGE.SEARCH_IMAGE_ORDER_FIELD_INVALID;
         responseObj.errorsObject = message.IMAGE.SEARCH_IMAGE_ORDER_FIELD_INVALID;
         responseObj.errorsMessage = message.IMAGE.SEARCH_IMAGE_ORDER_FIELD_INVALID.message;
