@@ -92,5 +92,18 @@ imageDao.executeIncrease= function(name_field, id){
     return imageDao.queryExecute(sql, params);
 };
 
+imageDao.getRangID= function(name_field, id){
+    var sql = SqlQueryConstant.IMAGE_SQL_SCRIPT.GET_RANG_ID;
+    var params = [];
+    return imageDao.queryExecute(sql, params);
+};
+
+imageDao.getImageIn= function(idArray){
+    var sql = SqlQueryConstant.IMAGE_SQL_SCRIPT.GET_IN_ID;
+    var params = [];
+    sql = sql.replace("#id", idArray.join(","));
+    return imageDao.queryExecute(sql, params);
+};
+
 /*Export*/
 module.exports = imageDao;

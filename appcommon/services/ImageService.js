@@ -52,6 +52,44 @@ var findImage = function(req, res){
     });
 };
 
+var getRandomArbitrary = function(min, max) {
+    return parseInt(Math.random() * (max - min) + min);
+}
+
+var findRandomImage = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var number = isNaN(req.query.number) || !req.query.number ? 20 : parseInt(req.query.number);
+
+    imageDao.getRangID().then(function (rang) {
+        var min = rang[0].minID;
+        var max = rang[0].maxID;
+
+        var idList = [];
+        for(var i = 0; i < number; i++){
+            idList.push(getRandomArbitrary(min, max));
+        }
+
+        console.log("idList : " + idList.join());
+
+        imageDao.getImageIn(idList).then(function (data) {
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function (err) {
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }, function (err) {
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 var executeIncrease = function(req, res){
     var responseObj = new ResponseServerDto();
 
@@ -97,5 +135,6 @@ var executeIncrease = function(req, res){
 /*Exports*/
 module.exports = {
     findImage : findImage,
-    executeIncrease : executeIncrease
+    executeIncrease : executeIncrease,
+    findRandomImage : findRandomImage
 }

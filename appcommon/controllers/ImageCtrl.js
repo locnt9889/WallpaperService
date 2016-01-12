@@ -11,6 +11,10 @@ var imageService = require("../services/ImageService");
 router.get('/search', [function(req, res, next) {
     imageService.findImage(req, res);
 }]);
+/* GET search image */
+router.get('/find-random', [function(req, res, next) {
+    imageService.findRandomImage(req, res);
+}]);
 
 /* GET exexute */
 router.get('/execute', [function(req, res, next) {
